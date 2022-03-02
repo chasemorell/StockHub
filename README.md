@@ -1,3 +1,13 @@
+## Notes from Wyatt (working on mac)
+1. Open pgadmin4 on your machine -> click Servers dropdown -> right click Login/Group Roles and select Create and then click Login/Group Role... -> enter "user" as name, add "516" as the password in the Definition tab -> give user all priviledges in Privileges tab
+   - These credentials match the credentials used in install.sh and setup.sh
+2. cd into the StockHub directory and run install.sh
+3. To run my bash scripts I had to add sh to the front of the command: "sh install.sh"
+   - This will ask to create a password and then prompt you to enter the password a few times.  I have hardcoded 516 as the password otherwise we would always be overwriting each other's .flaskenv files.
+   - It may also say your user is named something else, but I have also hardcoded the user as "user".
+4. To run app: follow instructions in **Running/Stopping the Website**
+ 
+
 This course project is intended as a 'standard option'.
 
 Created by [Rickard Stureborg](http://www.rickard.stureborg.com) and [Yihao Hu](https://www.linkedin.com/in/yihaoh/) for CS316, adapted for CS516.
