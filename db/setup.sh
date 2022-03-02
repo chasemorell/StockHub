@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#brew install coreutils
+#brew install postgresql
+
 mypath=`realpath $0`
 mybase=`dirname $mypath`
 cd $mybase
