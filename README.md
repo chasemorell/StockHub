@@ -81,7 +81,7 @@ Under `db/generated/`, you will find alternate CSV files that will be used to in
 ## Loading Stock Data into SQL Database - Notes from Chase
 
 * I've updated `db/create.sql` to include 2 new tables (stocks and timedata). We will need to add more, however.
-* I've created a script `db/getStockData.py` that fetches stock price data using polygon API and adds data to the SQL database. The repo already has the data cached in local files `db/data/sp500.csv` and `db/data/tickerYTD.obj`. Currently it is configured to get 2 years of daily market info for all S&P500 stocks. 
+* I've created a script `db/getStockData.py` that fetches stock price data using polygon API and adds data to the SQL database. Currently it is configured to get 2 years of daily market info for all S&P500 stocks. Since fetching data via the API takes a long time (throttling), I've put the fetched data in local files `db/data/sp500.csv` and `db/data/tickerYTD.obj`. Setup for you should be fast!
 
 What you need to do (Important):
 * `python3 getStockData.py a` to load data into database
