@@ -78,6 +78,12 @@ Under `db/generated/`, you will find alternate CSV files that will be used to in
   This rule applies to the password value in the CSV files too.
   To see what hashed password value you should put in a CSV file, see `db/data/gen.py` for example of how compute the hashed value.
 
+## Loading Stock Data into SQL Database - Notes from Chase
+
+* I've updated `db/create.sql` to include 2 new tables (stocks and timedata). We will need to add more, however.
+* I've created a script `db/getStockData.py` that fetches stock price data using polygon API and adds data to the SQL database. The repo already has the data cached in local files `db/data/sp500.csv` and `db/data/tickerYTD.obj`. 
+* IMPORTANT: `python3 getStockData.py a` to load data into database
+
 ## Git Tips
 
 These instructions seem long, but they aren't complicated.
