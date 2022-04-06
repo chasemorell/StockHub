@@ -1,16 +1,19 @@
+<!-- Written by Chase Morell -->
 {% extends "base.html" %}
 
 {% block content %}
 
 <br><br>
 <h2>Stock Explorer   </h2>
+
+    <!-- Search Bar -->
     <form class="search" method="post" action="{{ url_for('stocks.explore_search') }}"
      style="margin:auto">
         <input type="text" placeholder="Search for a Stock" name="searchInput">
         <button type="submit"><i class="btn btn-default">Search</i>
         </button>
       <p>
-
+        <!-- Only show this if we've searched something! -->
         {% if searchInput != "" %}
         Showing results for: "{{ searchInput}}"
 
@@ -18,6 +21,7 @@
       </p>
     </form>
 
+  <!-- UI to sort ASC and DESC -->
   <form class="form-inline" method="POST" action="{{ url_for('stocks.explore') }}">
   <div class="form-group">
     <div class="input-group">
@@ -30,10 +34,10 @@
     </div>
     <button type="submit"><i class="btn btn-default">Sort</i></button>
   </div>
+  </form>
 
-</form>
 
-
+<!-- Show the stocks in a table -->
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
@@ -56,6 +60,7 @@
   </tbody>
 </table>
 
+<!-- TODO: The following code is from the skeleton. We'll need to update this to show the User's stocks -Chase. -->
 <br><br>
 {% if current_user.is_authenticated %}
 <h2>Your recent purchases:</h2>

@@ -21,6 +21,7 @@ def create_app():
     from .users import bp as user_bp
     app.register_blueprint(user_bp)
 
+    #We have to register the stock_pages.py to the blueprint!
     from .stock_pages import bp as stock_bp
     app.register_blueprint(stock_bp)
 

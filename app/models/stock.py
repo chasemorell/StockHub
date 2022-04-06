@@ -1,3 +1,4 @@
+#Written by Chase Morell
 from flask import current_app as app
 
 # most recent date the app has stock data downloaded. Update if we retrieve more current data.
@@ -10,6 +11,7 @@ class Stock:
         self.name = name
         self.sector = sector
         self.price = price
+
 
     @staticmethod
     def get(ticker):
@@ -68,6 +70,7 @@ ORDER BY name DESC ''', s=sqlSearchInput, p = MOST_RECENT_DATE_FOR_STOCK_PRICES
                               )
         return [Stock(*row) for row in rows]
 
+    #TODO: This function is a work in progress and doesn't work
     def get_details_by_ticker(ticker):
         rows = app.db.execute('''
                 SELECT stocks.ticker,name,sector,closeprice
