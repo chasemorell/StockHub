@@ -24,6 +24,12 @@
         padding-top: 20px;
     }
 
+    div {
+        justify-content: space-between;
+        padding: 10px;
+    }
+
+
     .main {
         padding: 0px 10px;
     }
@@ -51,7 +57,7 @@
       <h1 style="color:aliceblue">StockHub</h1>
      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
 
-          <a href="{{ url_for('index.explore') }}" type="button" class="btn btn-light">Explore Stocks</a>
+          <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Explore Stocks</a>
 
       </div>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">

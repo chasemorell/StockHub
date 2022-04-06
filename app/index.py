@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 from flask_login import current_user
 import datetime
 
@@ -26,10 +26,3 @@ def index():
                            avail_products=products,
                            purchase_history=purchases)
 
-
-@bp.route('/explore')
-def explore():
-    # Get all stocks
-    stocks = Stock.get_all()
-
-    return render_template("stockExplore.html", stocks=stocks)

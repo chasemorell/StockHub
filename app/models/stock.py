@@ -1,11 +1,15 @@
 from flask import current_app as app
 
+# most recent date the app has stock data downloaded. Update if we retrieve more current data.
+MOST_RECENT_DATE_FOR_STOCK_PRICES = '2022-03-10'
+
 
 class Stock:
-    def __init__(self, ticker, name, sector):
+    def __init__(self, ticker, name, sector,price):
         self.ticker = ticker
         self.name = name
         self.sector = sector
+        self.price = price
 
     @staticmethod
     def get(ticker):
@@ -18,10 +22,62 @@ WHERE ticker = :ticker
         return Stock(*(rows[0])) if rows is not None else None
 
     @staticmethod
-    def get_all():
+    def get_all(sortBy):
+        print("get all")
+        print(sortBy)
+
+        if (sortBy == "ASC"):
+            rows = app.db.execute('''
+SELECT stocks.ticker,name,sector,closeprice
+FROM stocks
+JOIN (SELECT ticker AS ticker,closeprice
+FROM timedata
+WHERE  period = :p
+ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
+ORDER BY name ASC
+''', p=MOST_RECENT_DATE_FOR_STOCK_PRICES
+                                  )
+        else:
+            rows = app.db.execute('''
+            SELECT stocks.ticker,name,sector,closeprice
+FROM stocks
+JOIN (SELECT ticker AS ticker,closeprice
+FROM timedata
+WHERE  period = :p
+ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
+ORDER BY name DESC
+            ''', p=MOST_RECENT_DATE_FOR_STOCK_PRICES
+                                  )
+
+        return [Stock(*row) for row in rows]
+
+    @staticmethod
+    def get_by_search(searchInput):
+        sqlSearchInput = '%' + searchInput + '%'
+        print(sqlSearchInput)
         rows = app.db.execute('''
-SELECT ticker, name, sector
-FROM Stocks
-'''
-                             )
+        SELECT stocks.ticker,name,sector,closeprice
+FROM stocks
+JOIN (SELECT ticker AS ticker,closeprice
+FROM timedata
+WHERE  period = :p
+ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
+WHERE name ILIKE :s OR stocks.ticker ILIKE :s
+ORDER BY name DESC ''', s=sqlSearchInput, p = MOST_RECENT_DATE_FOR_STOCK_PRICES
+
+                              )
+        return [Stock(*row) for row in rows]
+
+    def get_details_by_ticker(ticker):
+        rows = app.db.execute('''
+                SELECT stocks.ticker,name,sector,closeprice
+        FROM stocks
+        JOIN (SELECT ticker AS ticker,closeprice
+        FROM timedata
+        WHERE  period = :p
+        ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
+        WHERE name ILIKE :s OR stocks.ticker ILIKE :s
+        ORDER BY name DESC ''', s=sqlSearchInput, p=MOST_RECENT_DATE_FOR_STOCK_PRICES
+
+                              )
         return [Stock(*row) for row in rows]
