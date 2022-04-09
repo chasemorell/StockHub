@@ -3,7 +3,7 @@ FLASK_ENV=development
 FLASK_RUN_HOST=127.0.0.1
 FLASK_RUN_PORT=5000
 
-SECRET_KEY='r2znn-pyo3zvh_a3m426zwtf2n0bi6-g60fqqhepjkczxl5fdr'
+SECRET_KEY='b9edchxd34_b96o1nbnnsyie09w46aa4-tomqezv7h3smtzhjx'
 
 DB_NAME=stockhub
 DB_USER=user

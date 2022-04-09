@@ -7,6 +7,8 @@ from flask import Flask, redirect, url_for, render_template
 
 app = Flask(__name__)
 
+#from flask import Flask, redirect, url_for, render_template
+"""
 @app.route("/")
 def home():
     return render_template("home.html")
@@ -21,5 +23,4 @@ def user():
 
 if __name__ == "__main__":
     app.run()
-
 '''
