@@ -100,3 +100,16 @@ class User(UserMixin):
               portfolio_value = cur_sum)
 
         return User.get(id)
+
+    @staticmethod
+    def buy_stock(ticker, num_shares=False, num_dollars=False):
+        if not num_shares and not num_dollars:
+            return
+
+        info = Stock.get_in
+        elif num_shares:
+            pass
+
+        elif num_dollars:
+            pass
+

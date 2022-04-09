@@ -61,6 +61,11 @@
 
       </div>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+
+        <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Portfolio</a>
+
+    </div>
+      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
         {% else %}

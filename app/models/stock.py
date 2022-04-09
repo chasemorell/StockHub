@@ -108,3 +108,20 @@ ORDER BY name DESC ''', s=sqlSearchInput, p = MOST_RECENT_DATE_FOR_STOCK_PRICES
 
                               )
         return [Stock(*row) for row in rows]
+
+    @staticmethod
+    def get_by_sector(sector):
+        rows = app.db.execute('''
+        SELECT id, ticker,name, sector, price
+        FROM Stocks
+        WHERE sector = :sector
+        ''',
+           sector = sector)
+        return [Stock(*row) for row in rows]
+
+    @staticmethod
+    def get_current_price(ticker):
+        pass
+
+
+    
