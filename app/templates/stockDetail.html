@@ -5,13 +5,35 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>{{ title }}</title>
+  <title>{{ ticker }}</title>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
 </head>
 
 <body>
-  <center>
-    <h1>{{ title }}</h1>
+  <h1>{{generalData.name}} ({{ ticker }})</h1>
+  <p>{{generalData.sector}}</p>
+
+  <form class="form-inline" method="POST" action="{{ url_for('stocks.stock', text=ticker) }}">
+  <div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon"> </span>
+            <select name="graphValue" class="selectpicker form-control">
+              {% for each in graphValue %}
+              <option value="{{each}}" {% if each == sGV %} selected {% endif %}>{{each}}</option>
+              {% endfor %}
+            </select>
+
+            <select name="graphPeriod" class="selectpicker form-control">
+              {% for each in graphPeriod %}
+              <option value="{{each}}" {% if each == sGP %} selected {% endif %}>{{each}}</option>
+              {% endfor %}
+            </select>
+    </div>
+    <button type="submit"><i class="btn btn-default">Load Graph</i></button>
+  </div>
+  </form>
+
+
 
     <canvas id="chart" width="1000" height="400"></canvas>
     <script>
@@ -69,7 +91,6 @@
       });
 
     </script>
-  </center>
 </body>
 </html>
 
