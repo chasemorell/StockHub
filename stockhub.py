@@ -1,7 +1,8 @@
-#from app import create_app
+from app import create_app
 
-#app = create_app()
+app = create_app()
 
+'''
 from flask import Flask, redirect, url_for, render_template
 
 app = Flask(__name__)
@@ -20,3 +21,5 @@ def user():
 
 if __name__ == "__main__":
     app.run()
+
+'''
