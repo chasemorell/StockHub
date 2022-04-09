@@ -28,7 +28,7 @@ WHERE ticker = :ticker
         print("get all")
         print(sortBy)
 
-        if (sortBy == "ASC"):
+        if sortBy == "ASC Name":
             rows = app.db.execute('''
 SELECT stocks.ticker,name,sector,closeprice
 FROM stocks
@@ -39,7 +39,7 @@ ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
 ORDER BY name ASC
 ''', p=MOST_RECENT_DATE_FOR_STOCK_PRICES
                                   )
-        else:
+        elif sortBy == "DESC Name":
             rows = app.db.execute('''
             SELECT stocks.ticker,name,sector,closeprice
 FROM stocks
@@ -49,6 +49,30 @@ WHERE  period = :p
 ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
 ORDER BY name DESC
             ''', p=MOST_RECENT_DATE_FOR_STOCK_PRICES
+                                  )
+
+        elif sortBy == "ASC Price":
+            rows = app.db.execute('''
+                        SELECT stocks.ticker,name,sector,closeprice
+            FROM stocks
+            JOIN (SELECT ticker AS ticker,closeprice
+            FROM timedata
+            WHERE  period = :p
+            ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
+            ORDER BY closeprice ASC
+                        ''', p=MOST_RECENT_DATE_FOR_STOCK_PRICES
+                                  )
+
+        elif sortBy == "DESC Price":
+            rows = app.db.execute('''
+                        SELECT stocks.ticker,name,sector,closeprice
+            FROM stocks
+            JOIN (SELECT ticker AS ticker,closeprice
+            FROM timedata
+            WHERE  period = :p
+            ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
+            ORDER BY closeprice DESC
+                        ''', p=MOST_RECENT_DATE_FOR_STOCK_PRICES
                                   )
 
         return [Stock(*row) for row in rows]

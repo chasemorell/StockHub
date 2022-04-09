@@ -6,11 +6,14 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.stock import Stock
+from .models.stockDetail import StockDetail
 from .models.user import User
 
 from flask import Blueprint
 
 bp = Blueprint('stocks', __name__)
+
+SORT_OPTIONS = ["ASC Name", "DESC Name","ASC Price","DESC Price"]
 
 
 @bp.route('/explore', methods=['GET', 'POST'])
@@ -19,11 +22,11 @@ def explore():
     sortSelection = request.form.get('sort_select')
 
     if not sortSelection:
-        sortSelection = "ASC"
+        sortSelection = "ASC Name"
     print("Index Sort Selection: " + sortSelection)
     stocks = Stock.get_all(sortSelection)
 
-    return render_template("stockExplore.html", stocks=stocks, sortOptions=["ASC", "DESC"], selectedSort=sortSelection,
+    return render_template("stockExplore.html", stocks=stocks, sortOptions=SORT_OPTIONS, selectedSort=sortSelection,
                            searchInput="")
 
 
@@ -31,7 +34,7 @@ def explore():
 def explore_search():
     searchInput = request.form.get('searchInput')
     stocks = Stock.get_by_search(searchInput)
-    return render_template("stockExplore.html", stocks=stocks, sortOptions=["ASC", "DESC"], selectedSort="ASC",
+    return render_template("stockExplore.html", stocks=stocks, sortOptions=SORT_OPTIONS, selectedSort="ASC",
                            searchInput=searchInput)
 
 
@@ -40,4 +43,11 @@ def stock(text):
     ticker = text
     print("Ticker is: " + ticker)
 
-    return ticker;
+
+    timedata = StockDetail.getDataBetweenDates(ticker)
+    print(timedata[0].openprice)
+
+    line_labels = [x.period for x in timedata]
+    line_values = [x.closeprice for x in timedata]
+
+    return render_template('stockDetail.html', title=ticker, max=max(line_values), labels=line_labels, values=line_values);
