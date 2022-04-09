@@ -1,4 +1,6 @@
 #Written by Chase Morell
+#Work in progress
+
 from flask import current_app as app
 
 # most recent date the app has stock data downloaded. Update if we retrieve more current data.
