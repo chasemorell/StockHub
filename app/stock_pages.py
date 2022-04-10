@@ -29,6 +29,19 @@ def explore():
     return render_template("stockExplore.html", stocks=stocks, sortOptions=SORT_OPTIONS, selectedSort=sortSelection,
                            searchInput="")
 
+@bp.route('/portfolio', methods=['GET', 'POST'])
+def portfolio():
+    # Get all stocks
+    sortSelection = request.form.get('sort_select')
+
+    if not sortSelection:
+        sortSelection = "ASC Name"
+    print("Index Sort Selection: " + sortSelection)
+    stocks = Stock.get_all(sortSelection)
+
+    return render_template("portfolio.html", stocks=stocks, sortOptions=SORT_OPTIONS, selectedSort=sortSelection,
+                           searchInput="")
+
 
 @bp.route('/exploreSearch', methods=['GET', 'POST'])
 def explore_search():
@@ -51,3 +64,7 @@ def stock(text):
     line_values = [x.closeprice for x in timedata]
 
     return render_template('stockDetail.html', title=ticker, max=max(line_values), labels=line_labels, values=line_values);
+
+@bp.route('/transferMoney', methods=['GET'])
+def transfer_money():
+    return render_template('transfer_money.html')

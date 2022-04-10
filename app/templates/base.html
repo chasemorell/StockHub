@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Mini Amazon</title>
+  <title>StockHub</title>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -24,14 +24,23 @@
         padding-top: 20px;
     }
 
+    .row {
+        height: 100%;
+        background-color: #000;
+        overflow-x: hidden;
+        padding-top: 20px;
+	margin: 0px;
+    }
+
+
     div {
         justify-content: space-between;
-        padding: 10px;
+        padding: 5px;
     }
 
 
     .main {
-        padding: 0px 10px;
+        padding: 0px 5px;
     }
 
     .login-main-text {
@@ -48,17 +57,62 @@
         background-color: #000 !important;
         color: #fff;
     }
+
+    <!--Needed For Money Transfer Tab-->
+    .container{
+        width:90%;
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    .accInfo{
+        border:1px solid black;
+    }
+
+    .container ul{
+        list-style:none;
+        padding:0;
+        margin:0;
+    }
+
+    .container li{
+        display: block;
+        padding: 15px;
+        border:1px solid #DDDDDD;
+        margin-bottom: 30px;
+        border-radius: 3px;
+    }
+
+    .container li > label{
+        display: block;
+        float: left;
+        margin-top: -19px;
+        background: #FFFFFF;
+        height: 14px;
+        padding: 2px 5px 2px 5px;
+        color: #B9B9B9;
+        font-size: 14px;
+        overflow: hidden;
+        font-family: "Lato", sans-serif;
+    }
+
   </style>
 </head>
 
 <body>
-  <div class="sidenav">
+  <div class="row">
     {% block msg %}
       <h1 style="color:aliceblue">StockHub</h1>
      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
-
           <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Explore Stocks</a>
-
+          <!-- TODO Change link to Trade Page, Implement Page -->
+          <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Trade</a>
+      </div>
+      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+	        <a href="{{url_for('stocks.portfolio')}}" type="button" class="btn btn-light">My Portfolio</a>
+      </div>
+      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+	        <a href ="{{url_for('stocks.transfer_money')}}" type="button" class="btn btn-light">Transfer Money</a>
       </div>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
