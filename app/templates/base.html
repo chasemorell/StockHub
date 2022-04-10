@@ -55,12 +55,13 @@
   <div class="sidenav">
     {% block msg %}
       <h1 style="color:aliceblue">StockHub</h1>
-     <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
-
-          <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Explore Stocks</a>
-
-      </div>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+           <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Explore Stocks</a>
+
+          <!-- TODO Change link to Trade Page, Implement Page -->
+           <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Trade</a>
+          <!-- TODO Change Link to Portfolio Page, Implement Page -->
+           <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">My Portfolio</a>
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
         {% else %}
