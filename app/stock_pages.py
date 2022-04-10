@@ -13,7 +13,7 @@ from flask import Blueprint
 
 bp = Blueprint('stocks', __name__)
 
-SORT_OPTIONS = ["ASC Name", "DESC Name","ASC Price","DESC Price"]
+SORT_OPTIONS = ["ASC Name", "DESC Name", "ASC Price", "DESC Price"]
 
 
 @bp.route('/explore', methods=['GET', 'POST'])
@@ -41,8 +41,6 @@ def portfolio():
 
     return render_template("portfolio.html", stocks=stocks, sortOptions=SORT_OPTIONS, selectedSort=sortSelection,
                            searchInput="")
-
-
 
 @bp.route('/exploreSearch', methods=['GET', 'POST'])
 def explore_search():
