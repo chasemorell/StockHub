@@ -105,9 +105,11 @@
       <h1 style="color:aliceblue">StockHub</h1>
      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
           <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Explore Stocks</a>
-          <!-- TODO Change link to Trade Page, Implement Page -->
-          <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Trade</a>
       </div>
+      <!-- TODO Change link to Trade Page, Implement Page -->
+      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+        <a href="{{url_for('stocks.portfolio')}}" type="button" class="btn btn-light">Trade</a>
+     </div>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
 	        <a href="{{url_for('stocks.portfolio')}}" type="button" class="btn btn-light">My Portfolio</a>
       </div>
