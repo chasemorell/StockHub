@@ -29,6 +29,18 @@ def explore():
     return render_template("stockExplore.html", stocks=stocks, sortOptions=SORT_OPTIONS, selectedSort=sortSelection,
                            searchInput="")
 
+@bp.route('/portfolio', methods=['GET', 'POST'])
+def portfolio():
+    # Get all stocks
+    sortSelection = request.form.get('sort_select')
+
+    if not sortSelection:
+        sortSelection = "ASC Name"
+    print("Index Sort Selection: " + sortSelection)
+    stocks = Stock.get_all(sortSelection)
+
+    return render_template("portfolio.html", stocks=stocks, sortOptions=SORT_OPTIONS, selectedSort=sortSelection,
+                           searchInput="")
 
 @bp.route('/exploreSearch', methods=['GET', 'POST'])
 def explore_search():
@@ -36,7 +48,6 @@ def explore_search():
     stocks = Stock.get_by_search(searchInput)
     return render_template("stockExplore.html", stocks=stocks, sortOptions=SORT_OPTIONS, selectedSort="ASC",
                            searchInput=searchInput)
-
 
 @bp.route('/stock/<path:text>', methods=['GET','POST'])
 def stock(text):
@@ -83,3 +94,8 @@ def stock(text):
 
     return render_template('stockDetail.html', ticker=ticker, max=max(line_values), labels=line_labels,
                            values=line_values, generalData=generalData,graphValue = graphValue,graphPeriod = graphPeriod,sGV = selectedGraphValue,sGP = selectedGraphPeriod);
+
+  @bp.route('/transferMoney', methods=['GET'])
+  def transfer_money():
+    return render_template('transfer_money.html')
+ 

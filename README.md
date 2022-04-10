@@ -15,7 +15,7 @@
 What you need to do (Important):
 * ANYTIME install.sh IS RAN, THIS COMMAND MUST BE RE-RAN TO GET THE DATA LOADED INTO ONE'S LOCAL PGADMIN
 * cd db
-* `python3 getStockData.py a` to load data into database
+* `python3 getStockData.py' a to load data into database
 
 ## Running/Stopping the Website
 

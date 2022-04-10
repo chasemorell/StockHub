@@ -1,0 +1,83 @@
+<!--Written by Angel Garcia -->
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+<h2>Deposit or Withdraw</h2>
+
+    <div class="container">
+    <form>
+    <ul>
+
+    <li class="accInfo">
+    <!--label>Account Info </label-->
+    <table cellpadding="5" border="0" width="100%"> 
+        <tr>
+        <td> Transaction Type:<br> <input type="radio" name="acctype" value="1" checked> Deposit <input type="radio" name="acctype" value="2"> Withdraw </td>
+        </tr>
+        <tr>
+        <td> Account e-mail:<br> <input type="text" name="accountinfo" id="accountinfo" value=""> </td>
+        </tr>
+        <tr>
+          <td> Transaction Amount: <br> <input type="text" name="amntinfo" id="amntinfo" value=""> </td>
+          </tr>
+          <tr>
+          <td colspan="2"> <div style="padding-top:10px;">
+              <span style="padding-right:15%;"><button type="button" name="transfer" id="transfer" style="padding:5px;" onclick="return depositAmt();" >Transfer</button></span>
+          </div>
+          </td>
+          </tr>
+    </table>
+    </li>
+
+    <li class="accInfo">
+    <!--label for="viewTransInfo"> View Transactions </label-->
+    <div id="accDesc">
+            Name: - <br>
+            Account: - <br>
+            Initial Balance: $10000.00 <br>
+    <table cellpadding="2" cellpadding="2" border="1" width="100%">
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Balance</th>
+        </tr>
+        <tr>
+            <td colspan="3" align="center">No transaction found</td>
+        </tr>
+    </table>
+    </div>
+    </li>
+
+    </ul>
+    </form>
+    </div>
+
+<!-- TODO: The following code is from the skeleton. We'll need to update this to show the User's stocks -Chase. -->
+<br><br>
+{% if current_user.is_authenticated %}
+<h2>Your recent purchases:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Purchase ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for purchase in purchase_history%}
+      <tr>
+        <th scope="row">{{purchase.id}}</th>
+        <td>{{purchase.pid}}</td>
+        <td>{{purchase.time_purchased}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
+{% endif %}
+
+{% endblock %}
