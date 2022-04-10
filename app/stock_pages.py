@@ -43,6 +43,7 @@ def portfolio():
                            searchInput="")
 
 
+
 @bp.route('/exploreSearch', methods=['GET', 'POST'])
 def explore_search():
     searchInput = request.form.get('searchInput')
@@ -51,19 +52,51 @@ def explore_search():
                            searchInput=searchInput)
 
 
-@bp.route('/stock/<path:text>', methods=['GET'])
+@bp.route('/stock/<path:text>', methods=['GET','POST'])
 def stock(text):
+
+    selectedGraphValue = request.form.get('graphValue')
+    selectedGraphPeriod = request.form.get('graphPeriod')
+
+    if(selectedGraphPeriod == None or selectedGraphPeriod == None):
+        selectedGraphValue = 'closeprice'
+        selectedGraphPeriod = '1 Month'
+
+    print(selectedGraphValue)
+    print(selectedGraphPeriod)
+
     ticker = text
     print("Ticker is: " + ticker)
 
-
-    timedata = StockDetail.getDataBetweenDates(ticker)
-    print(timedata[0].openprice)
+    timedata = StockDetail.getDataBetweenDates(ticker, selectedGraphValue, selectedGraphPeriod)
+    generalData = Stock.get(ticker)
 
     line_labels = [x.period for x in timedata]
-    line_values = [x.closeprice for x in timedata]
 
-    return render_template('stockDetail.html', title=ticker, max=max(line_values), labels=line_labels, values=line_values);
+    if selectedGraphValue == 'closeprice':
+        line_values = [x.closeprice for x in timedata]
+    elif selectedGraphValue == 'highprice':
+        line_values = [x.highprice for x in timedata]
+    elif selectedGraphValue == 'lowprice':
+        line_values = [x.lowprice for x in timedata]
+    elif selectedGraphValue == 'transactioncount':
+        line_values = [x.transactioncount for x in timedata]
+    elif selectedGraphValue == 'openprice':
+        line_values = [x.openprice for x in timedata]
+    elif selectedGraphValue == 'tradingvolume':
+        line_values = [x.tradingvolume for x in timedata]
+    elif selectedGraphValue == 'volumeweightedaverageprice':
+        line_values = [x.volumeweightedaverageprice for x in timedata]
+    else:
+        line_values = [x.closeprice for x in timedata]
+
+
+    graphValue = StockDetail.getColumnNames(None)
+
+    graphPeriod = ["1 Day", "1 Week", "1 Month","1 Year","MAX"]
+
+    return render_template('stockDetail.html', ticker=ticker, max=max(line_values), labels=line_labels,
+                           values=line_values, generalData=generalData,graphValue = graphValue,graphPeriod = graphPeriod,sGV = selectedGraphValue,sGP = selectedGraphPeriod);
 
 @bp.route('/transferMoney', methods=['GET'])
 def transfer_money():
