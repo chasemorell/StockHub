@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from flask import current_app as app
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from datetime import datetime
 from .. import login
 
 
@@ -102,14 +102,81 @@ class User(UserMixin):
         return User.get(id)
 
     @staticmethod
-    def buy_stock(ticker, num_shares=False, num_dollars=False):
+    def buy_stock(uid, ticker, num_shares=False, num_dollars=False):
         if not num_shares and not num_dollars:
             return
 
-        info = Stock.get_in
+        #info = Stock.get_in
         elif num_shares:
-            pass
+            cur_price = Stock.get_current_price(ticker)
+            shares_cost= num_shares*cur_price
 
         elif num_dollars:
-            pass
+            cur_price = Stock.get_current_price(ticker)
+            shares_cost= num_dollars/cur_price
 
+        time_stamp = datetime.now()
+        buy_stock = app.db.execute("""
+            INSERT INTO
+            Purchases(uid, ticker,num_shares,cost, time_purchased)
+            VALUES(:uid, :ticker, :num_shares, :cost :time_stamp)
+            RETURNING uid
+            """,
+            uid= uid
+            ticker=ticker,
+            cost = shares_cost,
+            num_shares = num_shares,
+            time_stamp = timestamp)
+
+        cur_user= update_portfolio_value(uid)
+
+        return cur_user
+
+    def sell_stock(uid, ticker, num_shares=False, num_dollars=False):
+        if not num_shares and not num_dollars:
+            return
+        # elif if num_shares:
+        #     buy_stock(uid, ticker,-1*num_shares)
+        # elif if num_dollars:
+        #     buy_stock(uid, ticker,-1*num_dollars)
+        #
+
+        user_ticker_info = app.db.execute("""
+            SELECT ticker,sum(num_shares),sum(cost)
+            FROM Purchases
+            WHERE id = :uid AND ticker =:ticker
+            GROUP BY ticker
+            """,
+            uid= uid
+            ticker=ticker
+            )
+        if not user_ticker_info:
+            print('You do not own this ticker')
+            return
+        num_shares = user_ticker_info[0][1]
+        shares_value = user_ticker_info[0][2]
+        time_stamp = datetime.now()
+
+
+        if num_shares:
+            cur_price = Stock.get_current_price(ticker)
+            shares_cost= num_shares*cur_price
+
+        elif num_dollars:
+            cur_price = Stock.get_current_price(ticker)
+            shares_cost= num_dollars/cur_price
+
+        sell_stock = app.db.execute("""
+            INSERT INTO
+            Purchases(uid, ticker,num_shares,cost, time_purchased)
+            VALUES(:uid, :ticker, -1*:num_shares, -1*:cost :time_stamp)
+            RETURNING uid
+            """,
+            uid= uid
+            ticker=ticker,
+            cost = shares_cost,
+            num_shares = num_shares,
+            time_stamp = timestamp)
+
+        cur_user= update_portfolio_value(uid)
+        return cur_user
