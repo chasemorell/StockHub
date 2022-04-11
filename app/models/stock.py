@@ -15,11 +15,11 @@ class Stock:
     @staticmethod
     def get(ticker):
         rows = app.db.execute('''
-SELECT ticker, name, sector
-FROM Stocks
-WHERE ticker = :ticker
-''',
-                              ticker=ticker)
+        SELECT ticker, name, sector
+        FROM Stocks
+        WHERE ticker = :ticker
+        ''',
+            ticker=ticker)
         return Stock(*(rows[0])) if rows is not None else None
 
     @staticmethod
@@ -29,24 +29,24 @@ WHERE ticker = :ticker
 
         if sortBy == "ASC Name":
             rows = app.db.execute('''
-SELECT stocks.ticker,name,sector,closeprice
-FROM stocks
-JOIN (SELECT ticker AS ticker,closeprice
-FROM timedata
-WHERE  period = :p
-ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
-ORDER BY name ASC
-''', p=MOST_RECENT_DATE_FOR_STOCK_PRICES
+            SELECT stocks.ticker,name,sector,closeprice
+            FROM stocks
+            JOIN (SELECT ticker AS ticker,closeprice
+            FROM timedata
+            WHERE  period = :p
+            ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
+            ORDER BY name ASC
+            ''', p=MOST_RECENT_DATE_FOR_STOCK_PRICES
                                   )
         elif sortBy == "DESC Name":
             rows = app.db.execute('''
             SELECT stocks.ticker,name,sector,closeprice
-FROM stocks
-JOIN (SELECT ticker AS ticker,closeprice
-FROM timedata
-WHERE  period = :p
-ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
-ORDER BY name DESC
+            FROM stocks
+            JOIN (SELECT ticker AS ticker,closeprice
+            FROM timedata
+            WHERE  period = :p
+            ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
+            ORDER BY name DESC
             ''', p=MOST_RECENT_DATE_FOR_STOCK_PRICES
                                   )
 
@@ -73,7 +73,6 @@ ORDER BY name DESC
             ORDER BY closeprice DESC
                         ''', p=MOST_RECENT_DATE_FOR_STOCK_PRICES
                                   )
-
         return [Stock(*row) for row in rows]
 
     @staticmethod
@@ -82,15 +81,14 @@ ORDER BY name DESC
         print(sqlSearchInput)
         rows = app.db.execute('''
         SELECT stocks.ticker,name,sector,closeprice
-FROM stocks
-JOIN (SELECT ticker AS ticker,closeprice
-FROM timedata
-WHERE  period = :p
-ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
-WHERE name ILIKE :s OR stocks.ticker ILIKE :s
-ORDER BY name DESC ''', s=sqlSearchInput, p=MOST_RECENT_DATE_FOR_STOCK_PRICES
+        FROM stocks
+        JOIN (SELECT ticker AS ticker,closeprice
+        FROM timedata
+        WHERE  period = :p
+        ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
+        WHERE name ILIKE :s OR stocks.ticker ILIKE :s
+        ORDER BY name DESC ''', s=sqlSearchInput, p = MOST_RECENT_DATE_FOR_STOCK_PRICES)
 
-                              )
         return [Stock(*row) for row in rows]
 
     # TODO: This function is a work in progress and doesn't work
@@ -103,7 +101,26 @@ ORDER BY name DESC ''', s=sqlSearchInput, p=MOST_RECENT_DATE_FOR_STOCK_PRICES
         WHERE  period = :p
         ORDER BY period) AS tickerPrice ON tickerPrice.ticker = stocks.ticker
         WHERE name ILIKE :s OR stocks.ticker ILIKE :s
-        ORDER BY name DESC ''', s=sqlSearchInput, p=MOST_RECENT_DATE_FOR_STOCK_PRICES
+        ORDER BY name DESC ''', s=sqlSearchInput, p=MOST_RECENT_DATE_FOR_STOCK_PRICES)
 
-                              )
         return [Stock(*row) for row in rows]
+
+    @staticmethod
+    def get_by_sector(sector):
+        rows = app.db.execute('''
+        SELECT id, ticker,name, sector, price
+        FROM Stocks
+        WHERE sector = :sector
+        ''',
+           sector = sector)
+        return [Stock(*row) for row in rows]
+
+    @staticmethod
+    def get_current_price(ticker):
+        rows = app.db.execute('''
+        SELECT ticker, price
+        FROM Stocks
+        WHERE ticker = :ticker
+        ''',
+           ticker = ticker)
+        return rows[0][1] if rows is not None else None

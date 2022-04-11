@@ -2,6 +2,11 @@ from app import create_app
 
 app = create_app()
 
+'''
+from flask import Flask, redirect, url_for, render_template
+
+app = Flask(__name__)
+
 #from flask import Flask, redirect, url_for, render_template
 """
 @app.route("/")
@@ -18,4 +23,4 @@ def user():
 
 if __name__ == "__main__":
     app.run()
-"""
+'''
