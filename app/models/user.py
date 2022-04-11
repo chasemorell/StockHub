@@ -122,7 +122,7 @@ class User(UserMixin):
             VALUES(:uid, :ticker, :num_shares, :cost :time_stamp)
             RETURNING uid
             """,
-            uid= uid
+            uid= uid,
             ticker=ticker,
             cost = shares_cost,
             num_shares = num_shares,
@@ -147,7 +147,7 @@ class User(UserMixin):
             WHERE id = :uid AND ticker =:ticker
             GROUP BY ticker
             """,
-            uid= uid
+            uid= uid,
             ticker=ticker
             )
         if not user_ticker_info:
@@ -172,7 +172,7 @@ class User(UserMixin):
             VALUES(:uid, :ticker, -1*:num_shares, -1*:cost :time_stamp)
             RETURNING uid
             """,
-            uid= uid
+            uid= uid,
             ticker=ticker,
             cost = shares_cost,
             num_shares = num_shares,
