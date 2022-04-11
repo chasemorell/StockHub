@@ -1,4 +1,4 @@
-#Written by Chase Morell
+# Written by Chase Morell
 from flask import current_app as app
 
 # most recent date the app has stock data downloaded. Update if we retrieve more current data.
@@ -6,12 +6,11 @@ MOST_RECENT_DATE_FOR_STOCK_PRICES = '2022-03-10'
 
 
 class Stock:
-    def __init__(self, ticker, name, sector,price):
+    def __init__(self, ticker, name, sector, price=-1):
         self.ticker = ticker
         self.name = name
         self.sector = sector
         self.price = price
-
 
     @staticmethod
     def get(ticker):
@@ -92,7 +91,7 @@ class Stock:
 
         return [Stock(*row) for row in rows]
 
-    #TODO: This function is a work in progress and doesn't work
+    # TODO: This function is a work in progress and doesn't work
     def get_details_by_ticker(ticker):
         rows = app.db.execute('''
                 SELECT stocks.ticker,name,sector,closeprice
