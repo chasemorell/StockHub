@@ -1,13 +1,9 @@
 env/
 .flaskenv
-<<<<<<< HEAD
 .DS_Store
-**/__pycache__/
-=======
+**/__pycache__/*
 _pycache__
-.DS_Store
 app/__pycache__/
-app/models/__pycache__/stock.cpython-39.pyc
+app/models/__pycache__*
 *.pyc
-.pyc
->>>>>>> chase
+
