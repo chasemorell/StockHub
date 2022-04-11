@@ -91,6 +91,38 @@
       });
 
     </script>
+    <div></div>
+
+    <h3>Articles</h3>
+    <p>What other StockHub users are saying about {{generalData.name}}</p>
+    {% if articlesExist %}
+          <table class='table table-hover table-bordered container'>
+          <thead class="thead-light">
+          <tr>
+            <th scope="col">Rating</th>
+            <th scope="col">Article </th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for article in articles%}
+          <tr>
+            <th scope="row">{{article.rating}}/5</th>
+            <td>{{article.article_text}}</td>
+          </tr>
+        {% endfor %}
+  </tbody>
+</table>
+    {% else %}
+          <p>There are currently no articles about {{ticker}}.</p>
+    {% endif %}
+
+
+
+    <p>Bullish or Bearish on {{ticker}}?</p>
+    <form class="form-inline" method="POST" action="{{ url_for('article.write',ticker = ticker )}}">
+      <button  type="submit"><i class="btn btn-default">Write Article</i></button>
+    </form>
+    <div></div>
 </body>
 </html>
 
