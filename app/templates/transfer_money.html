@@ -30,21 +30,8 @@
         <tr>
         <td> Transaction Amount: <br> 
           <input type="text" name="amntinfo" id="amntinfo" value=""> 
-          <button type="submit" onclick="deposit_withdraw(acctype)"><i class="btn btn-default">Deposit</i>
-          <button type="submit" onclick="deposit_withdraw(acctype)"><i class="btn btn-default">Withdraw</i>
-          {% if amntinfo != "" %}
-          <!--script>
-            function deposit_withdraw(){
-              if (trtype == "1"){
-                {user.deposit({{current_user.id}},{{amntinfo}})}
-              }
-              else{
-                {user.withdraw({{current_user.id}},{{amntinfo}})}  
-              }}
-          </script-->
-          {% else %}
-          Missing transaction amount
-          {% endif %}
+          <button type="submit" onclick="User.deposit(acctype)"><i class="btn btn-default">Deposit</i>
+          <button type="submit" onclick="User.withdraw(acctype)"><i class="btn btn-default">Withdraw</i>
         </td>
         </tr>
         <!--tr>

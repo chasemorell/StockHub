@@ -1,0 +1,13 @@
+<!-- Written by Chase Morell -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Article Successfully Submitted</h1>
+
+<br><form class="form-inline"  action="{{ url_for('index.index' )}}">
+      <button  type="submit"><i class="btn btn-default">Return Home</i></button>
+</form>
+
+{% endblock %}

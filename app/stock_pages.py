@@ -6,6 +6,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
+from .models.article import Article
 from .models.stock import Stock
 from .models.stockDetail import StockDetail
 from .models.user import User
@@ -69,6 +70,12 @@ def stock(text):
     timedata = StockDetail.getDataBetweenDates(ticker, selectedGraphValue, selectedGraphPeriod)
     generalData = Stock.get(ticker)
 
+    articles = Article.getByTicker(ticker)
+    articlesExist = True
+    if articles == None:
+        print("there are no articles for this stock")
+        articlesExist = False
+
     line_labels = [x.period for x in timedata]
 
     if selectedGraphValue == 'closeprice':
@@ -94,13 +101,12 @@ def stock(text):
     graphPeriod = ["1 Day", "1 Week", "1 Month","1 Year","MAX"]
 
     return render_template('stockDetail.html', ticker=ticker, max=max(line_values), labels=line_labels,
-                           values=line_values, generalData=generalData,graphValue = graphValue,graphPeriod = graphPeriod,sGV = selectedGraphValue,sGP = selectedGraphPeriod);
+                           values=line_values, generalData=generalData,graphValue = graphValue,graphPeriod = graphPeriod,sGV = selectedGraphValue,sGP = selectedGraphPeriod,articles = articles,articlesExist = articlesExist);
 
 @bp.route('/transferMoney', methods=['GET'])
 def transfer_money():
-    id = User.__init__(id)
+    #id = User.get(id)
     balance = User.update_portfolio_value(id)
     #deposit = User.deposit()
     #withdraw = User.withdraw()
     return render_template('transfer_money.html', balance = balance)
- 

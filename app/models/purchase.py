@@ -29,4 +29,5 @@ class Purchase:
             ''',
               uid=uid,
               since=since)
-        return [Purchase(*row) for row in rows] if rows else None
+        return [Purchase(*row) for row in rows] if rows else [] #This is a quick fix (the [] instead of None)
+

@@ -6,4 +6,9 @@ _pycache__
 app/__pycache__/
 app/models/__pycache__*
 *.pyc
-
+app/__pycache__/__init__.cpython-39.pyc
+app/__pycache__/stock_pages.cpython-39.pyc
+app/__pycache__/users.cpython-39.pyc
+app/models/__pycache__/purchase.cpython-39.pyc
+app/models/__pycache__/stock.cpython-39.pyc
+app/models/__pycache__/stockDetail.cpython-39.pyc
