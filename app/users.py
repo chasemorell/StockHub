@@ -106,10 +106,9 @@ def submit_transfer():
             User.deposit(id, amount)
         elif type == 2: #withdraw 
             withdraw_amount = min(amount, current_user.get_available_balance(current_user.id))
-            print(withdraw_amount)
             User.withdraw(id, withdraw_amount)
         else:
-            print("oops")
+            print("Invalid Code")
         
         
         return render_template('transferSubmit.html')
@@ -121,6 +120,10 @@ def transfer():
     # Get all stocks
     if not current_user.is_authenticated:
         return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))
-    #print("write article for: " + str(ticker))
 
-    return render_template("transfer_money.html", available_balance=current_user.get_available_balance(current_user.id), current_user=current_user, email=current_user.email, transfers = [], transfersExist = False) #TODO:figure out/make transfers table 
+    return render_template("transfer_money.html", 
+                            available_balance=current_user.get_available_balance(current_user.id), 
+                            current_user=current_user, 
+                            email=current_user.email, 
+                            transfers = [], 
+                            transfersExist = False) # TODO: decided whether to make transfers table 
