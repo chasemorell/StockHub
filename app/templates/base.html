@@ -13,7 +13,7 @@
     }
 
     .main-head {
-        height: 150px;
+        height: 100px;
         background: #FFF;
     }
 
@@ -26,7 +26,7 @@
 
     .row {
         height: 100%;
-        background-color: #000;
+        background-color: #d9d9d9;
         overflow-x: hidden;
         padding-top: 20px;
 	margin: 0px;
@@ -100,9 +100,12 @@
 </head>
 
 <body>
+
+
   <div class="row">
+      <img src={{url_for('static', filename='logo.png')}} width = 100 height = 100 alt="Logo">
     {% block msg %}
-      <h1 style="color:aliceblue">StockHub</h1>
+      <h1 style="color:aliceblue"></h1>
 
      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
           <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Explore Stocks</a>
@@ -117,13 +120,16 @@
       </div>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
 	        <a href ="{{url_for('stocks.transfer_money')}}" type="button" class="btn btn-light">Transfer Money</a>
-      </div>
+      </div >
 
+    <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
-          Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+          <p style="color:black;">Hello {{current_user.firstname}}! </p>
+          <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
         {% else %}
           <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
         {% endif %}
+        </div >
       </div>
 
     {% endblock %}
