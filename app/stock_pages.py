@@ -1,3 +1,4 @@
+from cgitb import text
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
@@ -97,5 +98,10 @@ def stock(text):
 
 @bp.route('/transferMoney', methods=['GET'])
 def transfer_money():
+    #Probably need to add deposit, withdraw functions, account balance too
+    
+    #quantity = text
+    #deposit = User.deposit(id)
+    #withdraw = User.withdraw(id, quanity)
     return render_template('transfer_money.html')
  

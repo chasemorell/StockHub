@@ -13,38 +13,54 @@
 
     <li class="accInfo">
     <!--label>Account Info </label-->
+    
     <table cellpadding="5" width="100%"> 
         <tr>
-        <td> Name: {{user.firstname}} {{user.lastname}} </td>
+        <td> Name: {{current_user.firstname}} {{current_user.lastname}} </td>
         </tr>
         <tr>
-        <td> e-mail: {{user.email}} </td>
+        <td> e-mail: {{current_user.email}} </td>
         </tr>
         <tr>
-        <td> Current Balance: {{user.email}} </td>
+        <td> Current Balance: NEEDS TO BE CALLED </td>
         </tr>
         <tr>
         <td> Transaction Type:<br> <input type="radio" name="trtype" value="1" checked> Deposit <input type="radio" name="trtype" value="2"> Withdraw </td>
         </tr>
         <tr>
-          <td> Transaction Amount: <br> <input type="text" name="amntinfo" id="amntinfo" value=""> </td>
-          </tr>
-          <tr>
-          <td colspan="2"> <div style="padding-top:10px;">
-            <span style="padding-right:15%;"><button type="button" name="transfer" id="transfer" style="padding:5px;" onclick="deposit_withdraw(acctype)" >Transfer</button></span>
+        <td> Transaction Amount: <br> 
+          <input type="text" name="amntinfo" id="amntinfo" value=""> 
+          <button type="submit" onclick="deposit_withdraw(acctype)"><i class="btn btn-default">Transfer</i>
+          {% if amntinfo != %}
           <script>
             function deposit_withdraw(){
               if (trtype == "1"){
-                user.deposit
+                {user.deposit({{current_user.id}},{{amntinfo}})}
               }
               else{
-                user.deposit  
-              }
-          }
+                {user.withdraw({{current_user.id}},{{amntinfo}})}  
+              }}
           </script>
-          </div>
-          </td>
-          </tr>
+          {{% else %}}
+          Missing transaction amount
+          {{% endif %}}
+        </td>
+        </tr>
+        <!--tr>
+        <td colspan="2"> <div style="padding-top:10px;">
+        <span style="padding-right:15%;"><button type="button" name="transfer" id="transfer" style="padding:5px;" onclick="deposit_withdraw(acctype)" >Transfer</button></span>
+        <script>
+          function deposit_withdraw(){
+            if (trtype == "1"){
+              {user.deposit({{current_user.id}},)}
+            }
+            else{
+              {user.withdraw({{current_user.id}},)}  
+            }}
+        </script>
+        </div>
+        </td>
+        </tr-->
     </table>
     </li>
     <!-- Do we want a table on the transfer history?-->>
@@ -64,7 +80,6 @@
     </table>
     </div>
     </li-->
-
     </ul>
     </form>
     </div>
