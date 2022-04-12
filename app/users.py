@@ -93,3 +93,34 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
+
+
+@bp.route('/transferSubmit', methods=['GET', 'POST'])
+def submit_transfer():
+    if current_user.is_authenticated:
+        type = int(request.form.get('acctype'))
+        id = current_user.id
+        amount = float(request.form.get('amntinfo'))
+
+        if type == 1: #deposit
+            User.deposit(id, amount)
+        elif type == 2: #withdraw 
+            withdraw_amount = min(amount, current_user.get_available_balance(current_user.id))
+            print(withdraw_amount)
+            User.withdraw(id, withdraw_amount)
+        else:
+            print("oops")
+        
+        
+        return render_template('transferSubmit.html')
+
+    return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))
+
+@bp.route('/transferMoney', methods=['GET', 'POST'])
+def transfer():
+    # Get all stocks
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))
+    #print("write article for: " + str(ticker))
+
+    return render_template("transfer_money.html", available_balance=current_user.get_available_balance(current_user.id), current_user=current_user, email=current_user.email, transfers = [], transfersExist = False) #TODO:figure out/make transfers table 
