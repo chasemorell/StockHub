@@ -18,7 +18,6 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
-
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -35,7 +34,29 @@ def login():
             next_page = url_for('index.index')
 
         return redirect(next_page)
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('login.html',title='Sign In', form=form)
+
+#TODO THIS METHOD IS A WORK IN PROGRESS
+@bp.route('/loginRedirect/<path:text>', methods=['GET', 'POST'])
+def loginRedirect(text):
+    print("redirect login!")
+    reasonForRedirect = text
+    print(reasonForRedirect)
+    if current_user.is_authenticated:
+        return redirect(url_for('index.index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.get_by_auth(form.email.data, form.password.data)
+        if user is None:
+            flash('Invalid email or password')
+            return redirect(url_for('users.login'))
+        login_user(user)
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('index.index')
+
+        return redirect(next_page)
+    return render_template('login.html', reasonForRedirect = reasonForRedirect,title='Sign In', form=form)
 
 
 class RegistrationForm(FlaskForm):
