@@ -22,17 +22,18 @@
         <td> e-mail: {{current_user.email}} </td>
         </tr>
         <tr>
-        <td> Current Balance: NEEDS TO BE CALLED </td>
+        <td> Current Balance: {{balance}} </td>
         </tr>
-        <tr>
+        <!--tr>
         <td> Transaction Type:<br> <input type="radio" name="trtype" value="1" checked> Deposit <input type="radio" name="trtype" value="2"> Withdraw </td>
-        </tr>
+        </tr-->
         <tr>
         <td> Transaction Amount: <br> 
           <input type="text" name="amntinfo" id="amntinfo" value=""> 
-          <button type="submit" onclick="deposit_withdraw(acctype)"><i class="btn btn-default">Transfer</i>
-          {% if amntinfo != %}
-          <script>
+          <button type="submit" onclick="deposit_withdraw(acctype)"><i class="btn btn-default">Deposit</i>
+          <button type="submit" onclick="deposit_withdraw(acctype)"><i class="btn btn-default">Withdraw</i>
+          {% if amntinfo != "" %}
+          <!--script>
             function deposit_withdraw(){
               if (trtype == "1"){
                 {user.deposit({{current_user.id}},{{amntinfo}})}
@@ -40,10 +41,10 @@
               else{
                 {user.withdraw({{current_user.id}},{{amntinfo}})}  
               }}
-          </script>
-          {{% else %}}
+          </script-->
+          {% else %}
           Missing transaction amount
-          {{% endif %}}
+          {% endif %}
         </td>
         </tr>
         <!--tr>

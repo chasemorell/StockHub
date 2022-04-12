@@ -98,10 +98,9 @@ def stock(text):
 
 @bp.route('/transferMoney', methods=['GET'])
 def transfer_money():
-    #Probably need to add deposit, withdraw functions, account balance too
-    
-    #quantity = text
-    #deposit = User.deposit(id)
-    #withdraw = User.withdraw(id, quanity)
-    return render_template('transfer_money.html')
+    id = User.__init__(id)
+    balance = User.update_portfolio_value(id)
+    #deposit = User.deposit()
+    #withdraw = User.withdraw()
+    return render_template('transfer_money.html', balance = balance)
  
