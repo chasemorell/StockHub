@@ -123,4 +123,6 @@ def transfer():
         return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))
     #print("write article for: " + str(ticker))
 
+    print("User currently has: " + str(current_user.get_available_balance(current_user.id)))
+
     return render_template("transfer_money.html", available_balance=current_user.get_available_balance(current_user.id), current_user=current_user, email=current_user.email, transfers = [], transfersExist = False) #TODO:figure out/make transfers table 
