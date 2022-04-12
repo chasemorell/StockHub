@@ -7,7 +7,7 @@
 <h2>Deposit or Withdraw</h2>
 
     <div class="container">
-    <form>
+    <form method = 'POST' action="{{url_for('users.submit_transfer')}}">
     <ul>
 
     <li class="accInfo">
@@ -17,14 +17,14 @@
         <td> Transaction Type:<br> <input type="radio" name="acctype" value="1" checked> Deposit <input type="radio" name="acctype" value="2"> Withdraw </td>
         </tr>
         <tr>
-        <td> Account e-mail:<br> <input type="text" name="accountinfo" id="accountinfo" value=""> </td>
+        <td> Account e-mail:<br> <input readonly type="text" name="accountinfo" id="accountinfo" value={{email}}> </td>
         </tr>
         <tr>
-          <td> Transaction Amount: <br> <input type="text" name="amntinfo" id="amntinfo" value=""> </td>
+          <td> Transaction Amount: <br> <input type="number" name="amntinfo" id="amntinfo" value=""> </td>
           </tr>
           <tr>
           <td colspan="2"> <div style="padding-top:10px;">
-              <span style="padding-right:15%;"><button type="button" name="transfer" id="transfer" style="padding:5px;" onclick="return depositAmt();" >Transfer</button></span>
+            <input type="submit" value="Transfer">
           </div>
           </td>
           </tr>
@@ -34,10 +34,10 @@
     <li class="accInfo">
     <!--label for="viewTransInfo"> View Transactions </label-->
     <div id="accDesc">
-            Name: - <br>
-            Account: - <br>
-            Initial Balance: $10000.00 <br>
-    <table cellpadding="2" cellpadding="2" border="1" width="100%">
+            Name: {{current_user.firstname}} {{current_user.lastname}} <br>
+            Account ID: {{current_user.id}} <br>
+            Current Balance: ${{available_balance}} <br>
+    <!-- <table cellpadding="2" cellpadding="2" border="1" width="100%">
         <tr>
             <th>Description</th>
             <th>Amount</th>
@@ -46,7 +46,7 @@
         <tr>
             <td colspan="3" align="center">No transaction found</td>
         </tr>
-    </table>
+    </table> -->
     </div>
     </li>
 
@@ -54,30 +54,31 @@
     </form>
     </div>
 
+
 <!-- TODO: The following code is from the skeleton. We'll need to update this to show the User's stocks -Chase. -->
 <br><br>
-{% if current_user.is_authenticated %}
+{% if transfersExist %}
 <h2>Your recent purchases:</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Purchase ID</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Price</th>
+      <th scope="col">ID</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Balance</th>
     </tr>
   </thead>
   <tbody>
-    {% for purchase in purchase_history%}
+    {% for transfer in transfer_history%}
       <tr>
-        <th scope="row">{{purchase.id}}</th>
-        <td>{{purchase.pid}}</td>
-        <td>{{purchase.time_purchased}}</td>
+        <th scope="row">{{transfer.id}}</th>
+        <td>{{transfer.amount}}</td>
+        <td>{{transfer.balance}}</td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
 {% else %}
-<p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
+  <p>There are currently no past transfers for {{current_user.firstname}}</p>
 {% endif %}
 
 {% endblock %}
