@@ -4,25 +4,36 @@
 
 {% block content %}
 
+{% if article %}
+<h1>Update Article for {{ticker}}</h1>
+{% else %}
 <h1>Write Article for {{ticker}}</h1>
+{% endif %}
 
-<form class="form" method="POST" action="{{url_for('article.submit',ticker = ticker)}}">
+{% if reasonForRedirect %}
+<p style="color:red;">{{reasonForRedirect}}</p>
+{% endif %}
 
+{% if article %}
+<form class="form" method="POST" action=  "{{url_for('article.submit',ticker = ticker, updateAid = article.aid)}}">
+{% else %}
+<form class="form" method="POST" action=  "{{url_for('article.submit',ticker = ticker)}}">
+{% endif %}
 
     <br><p>Rating (Higher is Better):</p>
-    <input type="radio" id="1" name="rating" value="1">
+    <input type="radio" id="1" name="rating" value="1" {% if article and article.rating == 1 %}checked {% endif %}>
     <label for="1">1</label>
-    <input type="radio" id="2" name="rating" value="2">
+    <input type="radio" id="2" name="rating" value="2" {% if article and article.rating == 2 %}checked {% endif %}>
     <label for="2">2</label>
-    <input type="radio" id="3" name="rating" value="3">
+    <input type="radio" id="3" name="rating" value="3" {% if article and article.rating == 3 %}checked {% endif %}>
     <label for="3">3</label>
-    <input type="radio" id="4" name="rating" value="4">
+    <input type="radio" id="4" name="rating" value="4" {% if article and article.rating == 4 %}checked {% endif %}>
     <label for="4">4</label>
-    <input type="radio" id="5" name="rating" value="5">
+    <input type="radio" id="5" name="rating" value="5" {% if article and article.rating == 5 %}checked {% endif %}>
     <label for="4">5</label><br><br>
 
     <p>Article:</p>
-    <textarea name="text" cols="40" rows="5"></textarea>
+    <textarea name="text" cols="40" rows="5">{% if article %}{{article.article_text}}{% endif %}</textarea>
     <br>
 
 
