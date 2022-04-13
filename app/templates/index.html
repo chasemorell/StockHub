@@ -1,9 +1,33 @@
 {% extends "base.html" %}
-{% block content %}
+{% block content %} -->
 
 <br><br>
+<<<<<<< HEAD
 
 <h2>Welcome to StockHub!</h2>
+=======
+<h2>Products for sale:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in avail_products%}
+      <tr>
+        <th scope="row">{{product.id}}</th>
+        <td>{{product.name}}</td>
+        <td>{{product.price}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br><br>
+>>>>>>> 4941d147284c6fa5064ed676893ba3c72defeea2
 {% if current_user.is_authenticated %}
   <p>Navigate our website to find information on the stock market and invest!</p>
   <img src="https://i.pinimg.com/originals/ce/84/8f/ce848fa02d95f9f5bcf0cd4097773176.gif" alt="Cartoon" class= "center" style="width:400px;height:500px;">

@@ -1,0 +1,57 @@
+<!--Written by Angel Garcia -->
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+<h2>Deposit or Withdraw</h2>
+
+    <div class="container">
+    <form method = 'POST' action="{{url_for('users.submit_transfer')}}">
+    <ul>
+
+    <li class="accInfo">
+    <!--label>Account Info </label-->
+    <table cellpadding="5" border="0" width="100%"> 
+        <tr>
+        <td> Transaction Type:<br> <input type="radio" name="acctype" value="1" checked> Deposit <input type="radio" name="acctype" value="2"> Withdraw </td>
+        </tr>
+        <tr>
+        <td> Account e-mail:<br> <input readonly type="text" name="accountinfo" id="accountinfo" value={{email}}> </td>
+        </tr>
+        <tr>
+          <td> Transaction Amount: <br> <input type="number" name="amntinfo" id="amntinfo" value=""> </td>
+          </tr>
+          <tr>
+          <td colspan="2"> <div style="padding-top:10px;">
+            <input type="submit" value="Transfer">
+          </div>
+          </td>
+          </tr>
+    </table>
+    </li>
+
+    <li class="accInfo">
+    <!--label for="viewTransInfo"> View Transactions </label-->
+    <div id="accDesc">
+            Name: {{current_user.firstname}} {{current_user.lastname}} <br>
+            Account ID: {{current_user.id}} <br>
+            Current Balance: ${{available_balance}} <br>
+    <!-- <table cellpadding="2" cellpadding="2" border="1" width="100%">
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Balance</th>
+        </tr>
+        <tr>
+            <td colspan="3" align="center">No transaction found</td>
+        </tr>
+    </table> -->
+    </div>
+    </li>
+
+    </ul>
+    </form>
+    </div>
+
+{% endblock %}

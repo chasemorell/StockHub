@@ -107,6 +107,23 @@ class User(UserMixin):
 
 
     @staticmethod
+    def withdraw(id,quantity):
+        rows = app.db.execute("""
+            UPDATE Users
+            SET
+                CASE
+                available_balance = WHEN available_balance - :quanity >0 THEN  available_balance - :quanity
+                ELSE
+                    0
+            WHERE id = :id
+            RETURNING available_balance
+            """,
+              id=id,
+              quanity=quantity)
+        printf('Available balance is:',rows[0])
+        return row
+
+    @staticmethod
     def update_portfolio_value(id):
         rows = app.db.execute("""
             SELECT id,sum(monetary_value)
@@ -155,6 +172,7 @@ class User(UserMixin):
             time_stamp = timestamp)
 
         cur_user= update_portfolio_value(uid)
+        #take away money from account
 
         return cur_user
 

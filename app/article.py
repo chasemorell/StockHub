@@ -22,19 +22,63 @@ def submit(ticker):
     if not current_user.is_authenticated:
         return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))
 
-    headline = request.form.get('headline')
+    updateAid = request.args.get('updateAid')
     rating = request.form.get('rating')
     paragraph = request.form.get('text')
-    Article.postArticle(ticker, current_user.id, int(rating), paragraph)
+
+    if not (rating and paragraph):
+        return redirect(url_for('article.write', ticker=ticker, reasonForRedirect="Error: Fill out all the forms!"))
+
+    if not updateAid:
+        Article.postArticle(ticker, current_user.id, int(rating), paragraph)
+    else:
+        Article.update_article(current_user.id,updateAid,int(rating),paragraph)
+        return redirect(url_for('article.myArticles'))
 
     return render_template("writeSubmit.html")
 
 
-@bp.route('/write<path:ticker>', methods=['GET', 'POST'])
-def write(ticker):
-    # Get all stocks
+@bp.route('/update/<path:aid>', methods=['GET', 'POST'])
+def update(aid):
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))
+
+    article = Article.get(aid)
+
+    return render_template("writeArticle.html", ticker=article.ticker, article=article)
+
+
+@bp.route('/write/<path:ticker>', methods=['GET', 'POST'])
+def write(ticker, reasonForRedirect=""):
+    reasonForRedirect = request.args.get('reasonForRedirect')
+
     if not current_user.is_authenticated:
         return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))
     print("write article for: " + str(ticker))
 
-    return render_template("writeArticle.html", ticker=ticker)
+    return render_template("writeArticle.html", ticker=ticker, reasonForRedirect=reasonForRedirect)
+
+
+@bp.route('/deleteArticle/<path:aid>/<path:uid>', methods=['GET', 'POST'])
+def deleteArticle(aid, uid):
+    # Get all stocks
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))
+
+    print("aid to delete: " + aid);
+    print("uid to delete: " + uid);
+
+    Article.delete_article(uid, aid)
+
+    return redirect(url_for('article.myArticles'))
+
+
+@bp.route('/myArticles', methods=['GET', 'POST'])
+def myArticles():
+    # Get all stocks
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login', reasonForRedirect="You must login to view your articles."))
+
+    articles = Article.get_user_articles(current_user.id)
+
+    return render_template("articles.html", articles=articles)
