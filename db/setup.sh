@@ -1,7 +1,7 @@
-#!/bin/bash
+!/bin/bash
 
-#brew install coreutils
-#brew install postgresql
+brew install coreutils
+brew install postgresql
 
 mypath=`realpath $0`
 mybase=`dirname $mypath`
@@ -21,6 +21,13 @@ if [[ -n `psql -lqt | cut -d \| -f 1 | grep -w "$dbname"` ]]; then
 fi
 createdb $dbname
 
+
 psql -af create.sql $dbname
 cd $datadir
+
+# read -p "Do you want to run getStockData.py to load stocks from csv (Y/N) ?" y
+# if [ $y == "Y" ] ; then
+#   python3 $mybase/getStockData.py a
+# fi
+
 psql -af $mybase/load.sql $dbname

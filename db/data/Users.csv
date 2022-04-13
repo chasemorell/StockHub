@@ -1,1 +1,8 @@
-0,icecream@tastes.good,pbkdf2:sha256:260000$1GvmeoAkcWb89TyU$5f711eafb243c1c1a884715dd9bd6d185f29ccd3dab59ad19cc201a7260091cb,Joey,Shmoey
+0,icecream@tastes.good,pbkdf2:sha256:260000$1GvmeoAkcWb89TyU$5f711eafb243c1c1a884715dd9bd6d185f29ccd3dab59ad19cc201a7260091cb,Joey,Shmoey, 0,0
+1,jose@duke.com,123,jose,ba, 0,0
+2,wyatt@duke.com,123,wyatt,fo, 0,0
+3,chase@duke.com,123,chase,mo, 0,0
+4,roy@duke.com,123,roy,ho, 0,0
+5,jane@duke.com,123,jane,joe, 0,0
+6,edgar@duke.com,123,edgar,allan poe, 0,0
+7,angel@duke.com,123,mywittle, angel,0,0
