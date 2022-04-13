@@ -52,9 +52,9 @@ class Article:
         UPDATE Articles
         SET rating = :rating, article_text=:article_text
         WHERE uid = :uid and aid = :aid
-        RETURNING article_id
+        RETURNING aid
         ''',
-                              uid=uid, aid=aid)
+                              uid=uid, aid=aid, rating=rating, article_text=article_text)
         return Article.get(aid)
 
     @staticmethod

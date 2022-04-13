@@ -6,6 +6,9 @@
 <br><br>
 <h2>Your Portfolio </h2>
 
+    <div style="color: aliceblue; text-align: left; margin-bottom: 25px">
+      <a href="{{ url_for('article.myArticles') }}" type="button" class="btn btn-default">My Advice Articles</a>
+    </div>
     <!-- Search Bar -->
     <form class="search" method="post" action="{{ url_for('stocks.explore_search') }}"
      style="margin:auto">
