@@ -50,4 +50,3 @@ class Purchase:
         ORDER BY time_purchased DESC ''', s=sqlSearchInput, uid=uid)
 
         return [Purchase(*row) for row in rows] if rows else []
-
