@@ -9,6 +9,7 @@ from .models.article import Article
 from .models.stock import Stock
 from .models.stockDetail import StockDetail
 from .models.user import User
+from .models.purchase import Purchase
 
 from flask import Blueprint
 
@@ -16,6 +17,9 @@ bp = Blueprint('stocks', __name__)
 
 SORT_OPTIONS = ["ASC Name", "DESC Name", "ASC Price", "DESC Price"]
 
+@bp.route('/', methods=['GET'])
+def home():
+    return render_template("index.html")
 
 @bp.route('/explore', methods=['GET', 'POST'])
 def explore():
@@ -30,18 +34,6 @@ def explore():
     return render_template("stockExplore.html", stocks=stocks, sortOptions=SORT_OPTIONS, selectedSort=sortSelection,
                            searchInput="")
 
-@bp.route('/portfolio', methods=['GET', 'POST'])
-def portfolio():
-    # Get all stocks
-    sortSelection = request.form.get('sort_select')
-
-    if not sortSelection:
-        sortSelection = "ASC Name"
-    print("Index Sort Selection: " + sortSelection)
-    stocks = Stock.get_all(sortSelection)
-
-    return render_template("portfolio.html", stocks=stocks, sortOptions=SORT_OPTIONS, selectedSort=sortSelection,
-                           searchInput="")
 
 @bp.route('/exploreSearch', methods=['GET', 'POST'])
 def explore_search():
@@ -102,4 +94,13 @@ def stock(text):
     return render_template('stockDetail.html', ticker=ticker, max=max(line_values), labels=line_labels,
                            values=line_values, generalData=generalData,graphValue = graphValue,graphPeriod = graphPeriod,sGV = selectedGraphValue,sGP = selectedGraphPeriod,articles = articles,articlesExist = articlesExist);
 
+@bp.route('/portfolio', methods=['GET', 'POST'])
+def portfolio():
+    portfolio = Purchase.get_user_portfolio(current_user.id)
+    if portfolio is None:
+        portfolio = ""     
+    return render_template("portfolio.html", portfolio =  portfolio)
 
+@bp.route('/transferMoney', methods=['GET'])
+def transfer_money():
+    return render_template('transfer_money.html')

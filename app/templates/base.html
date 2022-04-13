@@ -96,6 +96,12 @@
         font-family: "Lato", sans-serif;
     }
 
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
   </style>
 </head>
 
@@ -106,15 +112,12 @@
       <img src={{url_for('static', filename='logo.png')}} width = 100 height = 100 alt="Logo">
     {% block msg %}
       <h1 style="color:aliceblue"></h1>
-
+      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+        <a href="{{ url_for('stocks.home') }}" type="button" class="btn btn-light">Home</a>
+     </div>
      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
           <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Explore Stocks</a>
       </div>
-      <!-- TODO Change link to Trade Page, Implement Page -->
-      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
-
-        <a href="{{url_for('purchases.purchases')}}" type="button" class="btn btn-light">Past Purchases</a>
-     </div>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
 	        <a href="{{url_for('stocks.portfolio')}}" type="button" class="btn btn-light">My Portfolio</a>
       </div>

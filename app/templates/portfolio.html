@@ -1,68 +1,71 @@
-<!-- Written by Chase Morell/Angel Garcia -->
+<!-- Written by Angel Garcia -->
 {% extends "base.html" %}
 
 {% block content %}
-
+{% if current_user.is_authenticated %}
 <br><br>
-<h2>Your Portfolio </h2>
+<h2>Your portfolio: </h2>
 
-    <div style="color: aliceblue; text-align: left; margin-bottom: 25px">
-      <a href="{{ url_for('article.myArticles') }}" type="button" class="btn btn-default">My Advice Articles</a>
-    </div>
-    <!-- Search Bar -->
-    <form class="search" method="post" action="{{ url_for('stocks.explore_search') }}"
-     style="margin:auto">
-        <input type="text" placeholder="Search for a Stock" name="searchInput">
-        <button type="submit"><i class="btn btn-default">Search</i>
-        </button>
-      <p>
-        <!-- Only show this if we've searched something! -->
-        {% if searchInput != "" %}
-        Showing results for: "{{ searchInput}}"
+<div style="color: aliceblue; text-align: left; margin-bottom: 25px">
+  <a href="{{ url_for('article.myArticles') }}" type="button" class="btn btn-default">My Advice Articles</a>
+</div>
+<!-- Search Bar -->
+<form class="search" method="post" action="{{ url_for('stocks.explore_search') }}"
+ style="margin:auto">
+    <input type="text" placeholder="Search for a Stock" name="searchInput">
+    <button type="submit"><i class="btn btn-default">Search</i>
+    </button>
+  <p>
+    <!-- Only show this if we've searched something! -->
+    {% if searchInput != "" %}
+    Showing results for: "{{ searchInput}}"
 
-        {% endif %}
-      </p>
-    </form>
-
-  <!-- UI to sort ASC and DESC -->
-  <form class="form-inline" method="POST" action="{{ url_for('stocks.explore') }}">
-  <div class="form-group">
-    <div class="input-group">
-        <span class="input-group-addon"> </span>
-            <select name="sort_select" class="selectpicker form-control">
-              {% for each in sortOptions %}
-              <option value="{{each}}" {% if each == selectedSort %} selected {% endif %}>{{each}}</option>
-              {% endfor %}
-            </select>
-    </div>
-    <button type="submit"><i class="btn btn-default">Sort</i></button>
-  </div>
-  </form>
-
-
-<!-- Show the stocks in a table -->
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Ticker</th>
-      <th scope="col">Name</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Price</th>
-
-    </tr>
-  </thead>
-  <tbody>
-    {% for stock in stocks%}
+    {% endif %}
+  </p>
+  <!-- Show the stocks owned in a table -->
+  <table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
       <tr>
-        <th scope="row"><a href="{{ url_for('stocks.stock', text=stock.ticker)}}" type="button" class="btn btn-link">{{stock.ticker}}</a></th>
-        <td>{{stock.name}}</td>
-        <td></td>
-        <td>${{stock.price}}</td>
+        <th scope="col">Ticker</th>
+        <th scope="col">Stocks Owned </th>
+        <th scope="col">Total Investment</th>
       </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+    {% for stock in portfolio%}
+        <tr>
+          <td> {{stock[1]}} </td>
+          <td> {{stock[2]}}</td>
+          <td> {{stock[3]}}</td>
+        </tr>
+     {% endfor %}
+    </tbody>
+  </table>
 
-
+<!-- Show transaction history in a table>
+<h2>Past purchases:</h2>
+  <table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Ticker</th>
+        <th scope="col">Number of Stocks</th>
+        <th scope="col">Price Per Stock</th>
+        <th scope="col">Time of purchase</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for purchase in purchases%}
+        <tr>
+          <td>{{purchase.ticker}}</th>
+          <td>{{purchase.num_shares}}</td>
+          <td>{{purchase.cost}}</td>
+          <td>{{purchase.time_purchased}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table-->
+{% else %}
+<p><a href="{{ url_for('users.login') }}">Log in</a> to see your portfolio!</p>
+{% endif %}
 
 {% endblock %}
