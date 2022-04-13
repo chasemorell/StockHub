@@ -96,6 +96,12 @@
         font-family: "Lato", sans-serif;
     }
 
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
   </style>
 </head>
 
@@ -106,7 +112,9 @@
       <img src={{url_for('static', filename='logo.png')}} width = 100 height = 100 alt="Logo">
     {% block msg %}
       <h1 style="color:aliceblue"></h1>
-
+      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+        <a href="{{ url_for('stocks.home') }}" type="button" class="btn btn-light">Home</a>
+     </div>
      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
           <a href="{{ url_for('stocks.explore') }}" type="button" class="btn btn-light">Explore Stocks</a>
       </div>
@@ -114,15 +122,10 @@
 	        <a href="{{url_for('stocks.portfolio')}}" type="button" class="btn btn-light">My Portfolio</a>
       </div>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
-	        <a href ="{{url_for('stocks.transfer_money')}}" type="button" class="btn btn-light">Transfer Money</a>
-<<<<<<< HEAD
+	        <a href ="{{url_for('users.transfer')}}" type="button" class="btn btn-light">Transfer Money</a>
       </div>
-      <div style="color: aliceblue; text-align: right; margin-bottom: 25px"></div>
-=======
-      </div >
 
     <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
->>>>>>> 647a88443ca933b5a3fa67913c9cec07a0371e7c
         {% if current_user.is_authenticated %}
           <p style="color:black;">Hello {{current_user.firstname}}! </p>
           <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>

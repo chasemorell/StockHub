@@ -3,49 +3,13 @@
 
 <br><br>
 
-<h2>Products for sale:</h2>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Product ID</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for product in avail_products%}
-      <tr>
-        <th scope="row">{{product.id}}</th>
-        <td>{{product.name}}</td>
-        <td>{{product.price}}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-<br><br>
+<h2>Welcome to StockHub!</h2>
 {% if current_user.is_authenticated %}
-<h2>Your recent purchases:</h2>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Purchase ID</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for purchase in purchase_history%}
-      <tr>
-        <th scope="row">{{purchase.id}}</th>
-        <td>{{purchase.pid}}</td>
-        <td>{{purchase.time_purchased}}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  <p>Navigate our website to find information on the stock market and invest!</p>
+  <img src="https://i.pinimg.com/originals/ce/84/8f/ce848fa02d95f9f5bcf0cd4097773176.gif" alt="Cartoon" class= "center" style="width:400px;height:500px;">
 {% else %}
-<p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
+  <p>Navigate our website to find information on the stock market and <a href="{{ url_for('users.login') }}">log in</a> to invest!</p>
+  <img src="https://i.pinimg.com/originals/ce/84/8f/ce848fa02d95f9f5bcf0cd4097773176.gif" alt="Cartoon" class= "center" style="width:400px;height:500px;">
 {% endif %}
 
 {% endblock %}

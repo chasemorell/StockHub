@@ -4,40 +4,52 @@
 {% block content %}
 {% if current_user.is_authenticated %}
 <br><br>
-<h2>Your portfolio </h2>
+<h2>Your portfolio: </h2>
 
+<div style="color: aliceblue; text-align: left; margin-bottom: 25px">
+  <a href="{{ url_for('article.myArticles') }}" type="button" class="btn btn-default">My Advice Articles</a>
+</div>
+<!-- Search Bar -->
+<form class="search" method="post" action="{{ url_for('stocks.explore_search') }}"
+ style="margin:auto">
+    <input type="text" placeholder="Search for a Stock" name="searchInput">
+    <button type="submit"><i class="btn btn-default">Search</i>
+    </button>
+  <p>
+    <!-- Only show this if we've searched something! -->
+    {% if searchInput != "" %}
+    Showing results for: "{{ searchInput}}"
+
+    {% endif %}
+  </p>
   <!-- Show the stocks owned in a table -->
   <table class='table table-hover table-bordered container'>
     <thead class="thead-dark">
       <tr>
         <th scope="col">Ticker</th>
-        <th scope="col">Name</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Price</th>
+        <th scope="col">Stocks Owned </th>
         <th scope="col">Total Investment</th>
       </tr>
     </thead>
     <tbody>
-      <!--{% for stock in stocks%} -- ADD similar case for portfolio data -->
+    {% for stock in portfolio%}
         <tr>
-          <td> Ticker 1 </td>
-          <td> Name 1</td>
-          <td> Quantity 1</td>
-          <td> Price 1</td>
-          <td> Total Investment 1 </td>
+          <td> {{stock[1]}} </td>
+          <td> {{stock[2]}}</td>
+          <td> {{stock[3]}}</td>
         </tr>
-      <!--{% endfor %}-->
+     {% endfor %}
     </tbody>
   </table>
 
-<h2>Your recent purchases:</h2>
-<!-- Show transaction history in a table -->
+<!-- Show transaction history in a table>
+<h2>Past purchases:</h2>
   <table class='table table-hover table-bordered container'>
     <thead class="thead-dark">
       <tr>
         <th scope="col">Ticker</th>
-        <th scope="col">Number of shares</th>
-        <th scope="col">Cost</th>
+        <th scope="col">Number of Stocks</th>
+        <th scope="col">Price Per Stock</th>
         <th scope="col">Time of purchase</th>
       </tr>
     </thead>
@@ -51,7 +63,7 @@
         </tr>
       {% endfor %}
     </tbody>
-</table>
+</table-->
 {% else %}
 <p><a href="{{ url_for('users.login') }}">Log in</a> to see your portfolio!</p>
 {% endif %}

@@ -18,7 +18,7 @@ class Purchase:
         WHERE uid = :uid
         ''',
         uid=uid)
-        return [Purchase(*row) for row in rows] if rows else None
+        return [Purchase(*row) for row in rows] if rows else None       
 
     @staticmethod
     def get_all_by_uid_since(uid, since):
@@ -33,3 +33,14 @@ class Purchase:
               since=since)
         return [Purchase(*row) for row in rows] if rows else [] #This is a quick fix (the [] instead of None)
 
+    @staticmethod
+    def get_user_portfolio(uid):
+        rows = app.db.execute('''
+            SELECT uid, ticker, SUM(num_shares) AS sum_shares , SUM(cost) AS sum_cost
+            FROM Purchases
+            WHERE uid = :uid
+            GROUP BY uid, ticker HAVING SUM(cost) <> 0
+            ORDER BY ticker DESC
+            ''',
+              uid=uid,)
+        return rows if rows else [] #This is a quick fix (the [] instead of None)

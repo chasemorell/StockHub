@@ -15,7 +15,5 @@ fi
 
 source ../.flaskenv
 dbname=$DB_NAME
-
-
 psql -af createStockRelations.sql $dbname
 cd $datadir

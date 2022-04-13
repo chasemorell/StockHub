@@ -80,7 +80,31 @@ class User(UserMixin):
             """,
               id=id,
               quanity=quantity)
-        return User.get(id)
+
+    @staticmethod
+    def withdraw(id,quantity):
+        rows = app.db.execute("""
+            UPDATE Users
+            SET available_balance = available_balance - :quanity
+            WHERE id = :id
+            """,
+              id=id,
+              quanity=quantity)
+
+        
+
+    @staticmethod
+    def get_available_balance(id):
+        rows = app.db.execute("""
+            SELECT available_balance
+            FROM Users
+            WHERE id = :id
+            """, id=id)
+
+        res = rows[0][0]
+
+        return res
+
 
     @staticmethod
     def update_portfolio_value(id):
