@@ -16,6 +16,9 @@ bp = Blueprint('purchases', __name__)
 
 @bp.route('/exploreSearchPurchases', methods=['GET', 'POST'])
 def explore_search():
+    
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login', reasonForRedirect="You must login to view your purchase history."))
 
     searchInput = request.form.get('searchInput')
 
@@ -29,6 +32,9 @@ def explore_search():
 
 @bp.route('/pastPurchases', methods=['GET', 'POST'])
 def explore():
+
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login', reasonForRedirect="You must login to view your purchase history."))
 
     sortSelection = request.form.get('sort_select')
 
@@ -45,7 +51,7 @@ def explore():
 
 @bp.route('/pastPurchases', methods=['GET', 'POST'])
 def purchases():
-    # Get all stocks
+
     if not current_user.is_authenticated:
         return redirect(url_for('users.login', reasonForRedirect="You must login to view your purchase history."))
 
