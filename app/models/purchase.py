@@ -13,12 +13,12 @@ class Purchase:
     @staticmethod
     def get(uid):
         rows = app.db.execute('''
-        SELECT id, uid, ticker,num_shares,cost, time_purchased
+        SELECT id, uid, ticker, num_shares, cost, time_purchased
         FROM Purchases
         WHERE uid = :uid
         ''',
         uid=uid)
-        return [Purchase(*row) for row in rows] if rows else None
+        return [Purchase(*row) for row in rows] if rows else []
 
     @staticmethod
     def get_all_by_uid_since(uid, since):
@@ -33,10 +33,9 @@ class Purchase:
               since=since)
         return [Purchase(*row) for row in rows] if rows else [] #This is a quick fix (the [] instead of None)
 
-
     @staticmethod
     def get_all_by_uid(uid, sort = 'time_purchased DESC'):
-        rows = app.db.execute(f'SELECT id, uid, ticker, time_purchased FROM Purchases WHERE uid = {uid} ORDER BY {sort}')
+        rows = app.db.execute(f'SELECT id, uid, ticker, time_purchased, num_shares, cost FROM Purchases WHERE uid = {uid} ORDER BY {sort}')
 
         return [Purchase(*row) for row in rows] if rows else []
 
@@ -44,7 +43,7 @@ class Purchase:
     def get_by_search(uid, searchInput):
         sqlSearchInput = '%' + searchInput + '%'
         rows = app.db.execute('''
-        SELECT id, uid, ticker, time_purchased
+        SELECT id, uid, ticker, time_purchased, num_shares, cost
         FROM Purchases
         WHERE ticker ILIKE :s AND uid = :uid
         ORDER BY time_purchased DESC ''', s=sqlSearchInput, uid=uid)
