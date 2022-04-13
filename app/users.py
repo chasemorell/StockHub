@@ -124,6 +124,4 @@ def transfer():
     return render_template("transfer_money.html", 
                             available_balance=current_user.get_available_balance(current_user.id), 
                             current_user=current_user, 
-                            email=current_user.email, 
-                            transfers = [], 
-                            transfersExist = False) # TODO: decided whether to make transfers table 
+                            email=current_user.email) 
