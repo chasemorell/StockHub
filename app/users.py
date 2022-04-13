@@ -119,7 +119,7 @@ def submit_transfer():
 def transfer():
     # Get all stocks
     if not current_user.is_authenticated:
-        return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))
+        return redirect(url_for('users.login', reasonForRedirect="You must login to transfer money."))
 
     return render_template("transfer_money.html", 
                             available_balance=current_user.get_available_balance(current_user.id), 

@@ -1,13 +1,13 @@
-<!-- Chase Morell -->
+<!-- Written by Wyatt Focht -->
 {% extends "base.html" %}
 
 {% block content %}
 
 <br><br>
-<h2>Stock Explorer   </h2>
+<h2>Past Purchases</h2>
 
     <!-- Search Bar -->
-    <form class="search" method="post" action="{{ url_for('stocks.explore_search') }}"
+    <form class="search" method="post" action="{{ url_for('purchases.explore_search') }}"
      style="margin:auto">
         <input type="text" placeholder="Search for a Stock" name="searchInput">
         <button type="submit"><i class="btn btn-default">Search</i>
@@ -22,7 +22,7 @@
     </form>
 
   <!-- UI to sort ASC and DESC -->
-  <form class="form-inline" method="POST" action="{{ url_for('stocks.explore') }}">
+  <form class="form-inline" method="POST" action="{{ url_for('purchases.explore') }}">
   <div class="form-group">
     <div class="input-group">
         <span class="input-group-addon"> </span>
@@ -37,28 +37,31 @@
   </form>
 
 
-<!-- Show the stocks in a table -->
+
+<!-- Show the past purchases in a table -->
+<br><br>
+{% if current_user.is_authenticated %}
+<h2>Your Recent Purchases:</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
+      <th scope="col">Purchase ID</th>
       <th scope="col">Ticker</th>
-      <th scope="col">Name</th>
-      <th scope="col">Sector</th>
-      <th scope="col">Price</th>
-
+      <th scope="col">Time Purchased</th>
     </tr>
   </thead>
   <tbody>
-    {% for stock in stocks%}
+    {% for purchase in purchase_history%}
       <tr>
-        <th scope="row"><a href="{{ url_for('stocks.stock', text=stock.ticker)}}" type="button" class="btn btn-link">{{stock.ticker}}</a></th>
-        <td>{{stock.name}}</td>
-        <td>{{stock.sector}}</td>
-        <td>${{stock.price}}</td>
+        <th scope="row">{{purchase.pid}}</th>
+        <td>{{purchase.ticker}}</td>
+        <td>{{purchase.time_purchased}}</td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
-
+{% else %}
+<p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
+{% endif %}
 
 {% endblock %}

@@ -110,13 +110,13 @@
       <!-- TODO Change link to Trade Page, Implement Page -->
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
 
-        <a href="{{url_for('stocks.portfolio')}}" type="button" class="btn btn-light">Trade</a>
+        <a href="{{url_for('purchases.purchases')}}" type="button" class="btn btn-light">Past Purchases</a>
      </div>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
 	        <a href="{{url_for('stocks.portfolio')}}" type="button" class="btn btn-light">My Portfolio</a>
       </div>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
-	        <a href ="{{url_for('stocks.transfer_money')}}" type="button" class="btn btn-light">Transfer Money</a>
+	        <a href ="{{url_for('users.transfer')}}" type="button" class="btn btn-light">Transfer Money</a>
       </div>
 
         {% if current_user.is_authenticated %}

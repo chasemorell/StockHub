@@ -29,4 +29,7 @@ def create_app():
     from .stock_pages import bp as stock_bp
     app.register_blueprint(stock_bp)
 
+    from .purchases import bp as purchase_bp
+    app.register_blueprint(purchase_bp)
+
     return app
