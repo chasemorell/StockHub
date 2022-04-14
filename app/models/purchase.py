@@ -35,9 +35,9 @@ class Purchase:
 
     @staticmethod
     def get_all_by_uid(uid, sort = 'time_purchased DESC'):
-        rows = app.db.execute(f'SELECT id, uid, ticker, time_purchased, num_shares, cost FROM Purchases WHERE uid = {uid} ORDER BY {sort}')
+        rows = app.db.execute(f'SELECT id, uid, ticker, num_shares, cost,time_purchased FROM Purchases WHERE uid = {uid} ORDER BY {sort}')
 
-        return [Purchase(*row) for row in rows] if rows else []
+        return [Purchase(*row) for row in rows] if rows else    []
 
     @staticmethod
     def get_by_search(uid, searchInput):
@@ -50,3 +50,14 @@ class Purchase:
 
         return [Purchase(*row) for row in rows] if rows else []
 
+    @staticmethod
+    def get_user_portfolio(uid):
+        rows = app.db.execute('''
+            SELECT uid, ticker, SUM(num_shares) AS sum_shares , SUM(cost) AS sum_cost
+            FROM Purchases
+            WHERE uid = :uid
+            GROUP BY uid, ticker HAVING SUM(cost) <> 0
+            ORDER BY ticker DESC
+            ''',
+              uid=uid,)
+        return rows if rows else [] #This is a quick fix (the [] instead of None)
