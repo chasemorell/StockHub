@@ -101,12 +101,12 @@ def stock(text):
         if shares_detailed != []:
             shares_owned =shares_detailed[0][1]
             shares_owned_monetary_val =shares_detailed[0][2]
-            stockOwned = True
+            # stockOwned = True
         portfolio = Purchase.get_user_portfolio(current_user.id)
 
-    # for stock in portfolio:
-    #     if stock[1] == text:
-            # stockOwned = True
+        for stock in portfolio:
+            if stock[1] == text:
+                stockOwned = True
 
     return render_template('stockDetail.html', ticker=ticker, max=max(line_values), labels=line_labels,
                            values=line_values, generalData=generalData,graphValue = graphValue,

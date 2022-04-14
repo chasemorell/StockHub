@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 from .stock import Stock
+from .purchase import Purchase
 from .. import login
 
 
@@ -99,7 +100,6 @@ class User(UserMixin):
         rows = app.db.execute("""
             UPDATE Users
             SET
-
                 available_balance = CASE WHEN available_balance - :quanity >0 THEN  available_balance - :quanity
                 ELSE
                     0
@@ -111,26 +111,19 @@ class User(UserMixin):
               quanity=quantity)
         return rows
 
-    @staticmethod
-    def update_portfolio_value(id):
-        rows = app.db.execute("""
-            SELECT id,sum(monetary_value)
-            FROM Accounts
-            WHERE id = :id
-            GROUP BY id
-            """,
-              id=id)
-        cur_sum  = rows[0]
-        update_money = app.db.execute("""
-            UPDATE Users
-            SET portfolio_value = available_balance + :cur_sum
-            WHERE id = :id
-            RETURNING id
-            """,
-              id=id,
-              portfolio_value = cur_sum)
-
-        return User.get(id)
+    # @staticmethod
+    # def update_portfolio_value(id):
+    #     current_portfolio_sum= 0
+    #     update_money = app.db.execute("""
+    #         UPDATE Users
+    #         SET portfolio_value = available_balance + :cur_sum
+    #         WHERE id = :id
+    #         RETURNING id
+    #         """,
+    #           id=id,
+    #           portfolio_value = cur_sum)
+    #
+    #     return User.get(id)
 
     @staticmethod
     def buy_stock(uid, ticker, num_shares=False, num_dollars=False):
@@ -146,18 +139,23 @@ class User(UserMixin):
             cur_price = Stock.get_current_price(ticker)
             num_shares= num_dollars/cur_price
 
-        cur_time_stamp = datetime.now()
-        buy_stock = app.db.execute("""
-            INSERT INTO
-            Purchases(uid, ticker,num_shares,cost, time_purchased)
-            VALUES(:uid, :ticker, :num_shares, :cost, :time_stamp)
-            RETURNING uid
-            """,
-            uid= uid,
-            ticker=ticker,
-            cost = num_dollars,
-            num_shares = num_shares,
-            time_stamp = cur_time_stamp)
+
+        current_balance = User.get_available_balance(uid)
+        if  current_balance < num_dollars:
+            return
+        else:
+            cur_time_stamp = datetime.now()
+            buy_stock = app.db.execute("""
+                INSERT INTO
+                Purchases(uid, ticker,num_shares,cost, time_purchased)
+                VALUES(:uid, :ticker, :num_shares, :cost, :time_stamp)
+                RETURNING uid
+                """,
+                uid= uid,
+                ticker=ticker,
+                cost = num_dollars,
+                num_shares = num_shares,
+                time_stamp = cur_time_stamp)
 
 
 
@@ -177,6 +175,15 @@ class User(UserMixin):
             cur_price = Stock.get_current_price(ticker)
             num_shares= num_dollars/cur_price
 
+
+        shares_detailed = Purchase.get_shares_quantity_money_val(uid,ticker)
+        if shares_detailed != []:
+            shares_owned =shares_detailed[0][1]
+            shares_owned_monetary_val =shares_detailed[0][2]
+
+        if  shares_owned < num_shares or shares_owned_monetary_val < num_dollars:
+            return
+
         sell_stock = app.db.execute("""
             INSERT INTO
             Purchases(uid, ticker,num_shares,cost, time_purchased)
@@ -188,5 +195,13 @@ class User(UserMixin):
             cost = num_dollars,
             num_shares = num_shares,
             time_stamp = time_stamp)
+
+        update_money = app.db.execute("""
+                UPDATE Users
+                SET available_balance = available_balance + :num_dollars
+                WHERE id = :uid
+                """,
+                  uid=uid,
+                  num_dollars = num_dollars)
 
         return

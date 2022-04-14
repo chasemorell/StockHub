@@ -12,7 +12,7 @@
 
     <li class="accInfo">
     <!--label>Account Info </label-->
-    <table cellpadding="5" border="0" width="100%"> 
+    <table cellpadding="5" border="0" width="100%">
         <tr>
         <td> Transaction Type:<br> <input type="radio" name="acctype" value="1" checked> Deposit <input type="radio" name="acctype" value="2"> Withdraw </td>
         </tr>
@@ -20,7 +20,7 @@
         <td> Account e-mail:<br> <input readonly type="text" name="accountinfo" id="accountinfo" value={{email}}> </td>
         </tr>
         <tr>
-          <td> Transaction Amount: <br> <input type="number" name="amntinfo" id="amntinfo" value=""> </td>
+          <td> Transaction Amount: <br> <input required type="number" step="any" name="amntinfo" id="amntinfo" value=""> </td>
           </tr>
           <tr>
           <td colspan="2"> <div style="padding-top:10px;">

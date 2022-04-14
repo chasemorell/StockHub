@@ -8,6 +8,8 @@ import time
 import psycopg2
 import datetime
 import sys
+import os
+
 
 apiKeys = ["k_ePxQg21brxYpfaTJ0vNPFH3iqS3MeD", "Nt89WhIX9zlxMA2wmgIPNkrzLoBiOjYf", "E3va20jCegrw0s25IzTn0V7RoD5xEhk7",
            "VqxYiXemp8gz0luabgtnujOJJd0m3kad", "li0kMCbq8VFfqab5gaQbTp0h3ATfSuSa"]
