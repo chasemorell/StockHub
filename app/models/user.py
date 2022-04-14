@@ -120,7 +120,7 @@ class User(UserMixin):
             GROUP BY id
             """,
               id=id)
-        cur_sum  = rows[0][1]
+        cur_sum  = rows[0]
         update_money = app.db.execute("""
             UPDATE Users
             SET portfolio_value = available_balance + :cur_sum
@@ -140,75 +140,53 @@ class User(UserMixin):
         #info = Stock.get_in
         elif num_shares:
             cur_price = Stock.get_current_price(ticker)
-            shares_cost= num_shares*cur_price
+            num_dollars= num_shares*cur_price
 
         elif num_dollars:
             cur_price = Stock.get_current_price(ticker)
-            shares_cost= num_dollars/cur_price
+            num_shares= num_dollars/cur_price
 
-        time_stamp = datetime.now()
+        cur_time_stamp = datetime.now()
         buy_stock = app.db.execute("""
             INSERT INTO
             Purchases(uid, ticker,num_shares,cost, time_purchased)
-            VALUES(:uid, :ticker, :num_shares, :cost :time_stamp)
+            VALUES(:uid, :ticker, :num_shares, :cost, :time_stamp)
             RETURNING uid
             """,
             uid= uid,
             ticker=ticker,
-            cost = shares_cost,
+            cost = num_dollars,
             num_shares = num_shares,
-            time_stamp = timestamp)
+            time_stamp = cur_time_stamp)
 
-        cur_user= update_portfolio_value(uid)
-        #take away money from account
 
-        return cur_user
 
+    @staticmethod
     def sell_stock(uid, ticker, num_shares=False, num_dollars=False):
         if not num_shares and not num_dollars:
             return
-        # elif if num_shares:
-        #     buy_stock(uid, ticker,-1*num_shares)
-        # elif if num_dollars:
-        #     buy_stock(uid, ticker,-1*num_dollars)
-        #
 
-        user_ticker_info = app.db.execute("""
-            SELECT ticker,sum(num_shares),sum(cost)
-            FROM Purchases
-            WHERE id = :uid AND ticker =:ticker
-            GROUP BY ticker
-            """,
-            uid= uid,
-            ticker=ticker
-            )
-        if not user_ticker_info:
-            print('You do not own this ticker')
-            return
-        num_shares = user_ticker_info[0][1]
-        shares_value = user_ticker_info[0][2]
         time_stamp = datetime.now()
 
 
         if num_shares:
             cur_price = Stock.get_current_price(ticker)
-            shares_cost= num_shares*cur_price
+            num_dollars= num_shares*cur_price
 
         elif num_dollars:
             cur_price = Stock.get_current_price(ticker)
-            shares_cost= num_dollars/cur_price
+            num_shares= num_dollars/cur_price
 
         sell_stock = app.db.execute("""
             INSERT INTO
             Purchases(uid, ticker,num_shares,cost, time_purchased)
-            VALUES(:uid, :ticker, -1*:num_shares, -1*:cost :time_stamp)
+            VALUES(:uid, :ticker, -1*:num_shares, -1*:cost, :time_stamp)
             RETURNING uid
             """,
             uid= uid,
             ticker=ticker,
-            cost = shares_cost,
+            cost = num_dollars,
             num_shares = num_shares,
-            time_stamp = timestamp)
+            time_stamp = time_stamp)
 
-        cur_user= update_portfolio_value(uid)
-        return cur_user
+        return

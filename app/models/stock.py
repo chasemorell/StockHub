@@ -117,9 +117,11 @@ class Stock:
     @staticmethod
     def get_current_price(ticker):
         rows = app.db.execute('''
-        SELECT ticker, price
+        SELECT distinct closeprice
         FROM Stocks
-        WHERE ticker = :ticker
-        ''',
-           ticker = ticker)
-        return rows[0][1] if rows is not None else None
+        JOIN (SELECT ticker AS ticker,closeprice
+        FROM timedata
+        WHERE  period = :p
+        ORDER BY period) AS tickerPrice ON tickerPrice.ticker = :ticker
+        ''',  p=MOST_RECENT_DATE_FOR_STOCK_PRICES,ticker = ticker)
+        return rows[0][0] if rows is not None else None

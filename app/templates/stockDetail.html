@@ -124,22 +124,62 @@
     </form>
     <div></div>
 
-  {% if stockOwned %} 
-  <h4> Buy or Sell This Stock </h4>
-  <table>
-  <button  type="submit"><i class="btn btn-default">Buy</i></button> <button  type="submit"><i class="btn btn-default">Sell</i></button> 
-  <td> Transaction Amount: <br> <input type="number" name="amntinfo" id="amntinfo" value=""> </td> 
-  </table>
-  <br><br>
-   {% else %}
-   <h4> Buy This Stock </h4>
-   <table>
-   <button  type="submit"><i class="btn btn-default">Buy</i></button>
-   <td> Transaction Amount: <br> <input type="number" name="amntinfo" id="amntinfo" value=""> </td> 
-   </table>
-   <br><br>
+<div >
+  <h3> Buy This Stock </h3>
+
+  <form class="form" method="POST" action="{{ url_for('stocks.buy_stock',ticker=ticker )}}">
+
+    <table class='table table-hover table-bordered container' >
+      <tr>
+      <td> Current Price:<br> <input readonly type="text" value= {{curPrice}} name="curPrice" id="curPrice"> </td>
+      </tr>
+      <tr>
+      <td> Buy Type:<br> <input type="radio" name="buytype" value="1" checked> Number of Shares <input type="radio" name="buytype" value="2"> Dollar Amount </td>
+      </tr>
+      <tr>
+        <td> Transaction Amount: <br> <input type="number" name="amntinfo" id="amntinfo" value=""> </td>
+      </tr>
+
+
+      <td >
+        <input type="submit" value="Buy">
+
+      </td>
+
+    </table>
+  </form>
+  </div>
+
+  {% if stockOwned %}
+  <h3> Sell This Stock </h3>
+  <form class="form" method="POST" action="{{ url_for('stocks.sell_stock',ticker=ticker )}}">
+    <table class='table table-hover table-bordered container' >
+      <tr>
+      <td> Shares Owned:<br> <input readonly type="text" value={{shares_owned}} name="curShares" id="curShares"> </td>
+      <tr>
+      <tr>
+      <td> Shares Owned Monetary Value :<br> <input readonly type="text" value={{shares_owned_monetary_val}} name="curSharesVal" id="curSharesVal"> </td>
+      <tr>
+      <td> Current Price:<br> <input readonly type="text" value={{curPrice}} name="curPrice" id="curPrice"> </td>
+      </tr>
+      <tr>
+      <td> Sell Type:<br> <input type="radio" name="selltype" value="1" checked> Number of Shares <input type="radio" name="selltype" value="2"> Dollar Amount </td>
+      </tr>
+      <tr>
+        <td> Transaction Amount: <br> <input type="number" name="amntinfo" id="amntinfo" value=""> </td>
+      </tr>
+
+
+      <td >
+        <input type="submit" value="Sell">
+
+      </td>
+
+    </table>
+
    {% endif %}
-  
+   </form>
+
 </body>
 </html>
 

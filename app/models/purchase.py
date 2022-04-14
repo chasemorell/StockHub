@@ -61,3 +61,14 @@ class Purchase:
             ''',
               uid=uid,)
         return rows if rows else [] #This is a quick fix (the [] instead of None)
+
+    @staticmethod
+    def get_shares_quantity_money_val(uid, ticker):
+        rows = app.db.execute('''
+        SELECT ticker, SUM(num_shares) AS sum_shares , SUM(cost) AS sum_cost
+        FROM Purchases
+        WHERE uid = :uid AND ticker=:ticker
+        GROUP BY ticker
+         ''', ticker=ticker, uid=uid)
+
+        return rows if rows else []

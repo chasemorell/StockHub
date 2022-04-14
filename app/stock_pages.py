@@ -90,13 +90,16 @@ def stock(text):
     graphValue = StockDetail.getColumnNames(None)
 
     graphPeriod = ["1 Day", "1 Week", "1 Month","1 Year","MAX"]
-
+    curPrice = Stock.get_current_price(ticker)
+    shares_detailed = Purchase.get_shares_quantity_money_val(current_user.id,ticker)
+    shares_owned =shares_detailed[0][1]
+    shares_owned_monetary_val =shares_detailed[0][2]
     portfolio = Purchase.get_user_portfolio(current_user.id)
     flag = 0
     for stock in portfolio:
         if stock[1] == text:
             flag = 1
-    
+
     if flag == 1:
         stockOwned = True
     else:
@@ -105,15 +108,53 @@ def stock(text):
     return render_template('stockDetail.html', ticker=ticker, max=max(line_values), labels=line_labels,
                            values=line_values, generalData=generalData,graphValue = graphValue,
                            graphPeriod = graphPeriod,sGV = selectedGraphValue,sGP = selectedGraphPeriod,
-                           articles = articles,articlesExist = articlesExist, stockOwned = stockOwned);
+                           articles = articles,articlesExist = articlesExist, stockOwned = stockOwned,curPrice=curPrice, shares_owned= shares_owned,shares_owned_monetary_val= shares_owned_monetary_val );
 
 @bp.route('/portfolio', methods=['GET', 'POST'])
 def portfolio():
     portfolio = Purchase.get_user_portfolio(current_user.id)
     if portfolio is None:
-        portfolio = ""     
+        portfolio = ""
     return render_template("portfolio.html", portfolio =  portfolio)
 
 @bp.route('/transferMoney', methods=['GET'])
 def transfer_money():
     return render_template('transfer_money.html')
+
+@bp.route('/buystock', methods=['GET', 'POST'])
+def buy_stock():
+    ticker = request.args.get('ticker')
+    if current_user.is_authenticated:
+        type = int(request.form.get('buytype'))
+        id = current_user.id
+        amount = float(request.form.get('amntinfo'))
+
+        if type == 1: #num_shares
+            User.buy_stock(current_user.id,ticker, num_shares = amount)
+        elif type == 2: #dollar_amount
+            User.buy_stock(current_user.id,ticker, num_dollars=amount)
+        else:
+            print("Invalid Purchase Type")
+
+        return redirect(url_for('stocks.portfolio'))
+    else:
+        return redirect(url_for('users.login', reasonForRedirect="You must login to buy a stock."))
+
+@bp.route('/sellstock', methods=['GET', 'POST'])
+def sell_stock():
+    ticker = request.args.get('ticker')
+    if current_user.is_authenticated:
+        type = int(request.form.get('selltype'))
+        id = current_user.id
+        amount = float(request.form.get('amntinfo'))
+
+        if type == 1: #num_shares
+            User.sell_stock(current_user.id,ticker, num_shares = amount)
+        elif type == 2: #dollar_amount
+            User.sell_stock(current_user.id,ticker, num_dollars=amount)
+        else:
+            print("Invalid Purchase Type")
+
+        return redirect(url_for('stocks.portfolio'))
+    else:
+        return redirect(url_for('users.login', reasonForRedirect="You must login to buy a stock."))
