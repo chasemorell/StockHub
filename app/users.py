@@ -125,3 +125,11 @@ def transfer():
                             available_balance=current_user.get_available_balance(current_user.id), 
                             current_user=current_user, 
                             email=current_user.email) 
+
+@bp.route('/portfolio', methods=['GET', 'POST'])
+def portfolio_login():
+    # Get all stocks
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login', reasonForRedirect="You must login to see your portfolio."))
+
+    return render_template("portfolio.html") 
