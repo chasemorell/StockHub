@@ -110,8 +110,6 @@ def submit_transfer():
             User.withdraw(id, withdraw_amount)
         else:
             print("Invalid Code")
-
-
         return render_template('transferSubmit.html')
 
     return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))

@@ -91,24 +91,27 @@ def stock(text):
 
     graphPeriod = ["1 Day", "1 Week", "1 Month","1 Year","MAX"]
     curPrice = Stock.get_current_price(ticker)
-    shares_detailed = Purchase.get_shares_quantity_money_val(current_user.id,ticker)
-    shares_owned =shares_detailed[0][1]
-    shares_owned_monetary_val =shares_detailed[0][2]
-    portfolio = Purchase.get_user_portfolio(current_user.id)
-    flag = 0
-    for stock in portfolio:
-        if stock[1] == text:
-            flag = 1
+    shares_owned =0.0
+    shares_owned_monetary_val=0
+    login_flag = False
+    stockOwned = False
+    if current_user.is_authenticated:
+        login_flag = True
+        shares_detailed = Purchase.get_shares_quantity_money_val(current_user.id,ticker)
+        if shares_detailed != []:
+            shares_owned =shares_detailed[0][1]
+            shares_owned_monetary_val =shares_detailed[0][2]
+            stockOwned = True
+        portfolio = Purchase.get_user_portfolio(current_user.id)
 
-    if flag == 1:
-        stockOwned = True
-    else:
-        stockOwned = False
+    # for stock in portfolio:
+    #     if stock[1] == text:
+            # stockOwned = True
 
     return render_template('stockDetail.html', ticker=ticker, max=max(line_values), labels=line_labels,
                            values=line_values, generalData=generalData,graphValue = graphValue,
                            graphPeriod = graphPeriod,sGV = selectedGraphValue,sGP = selectedGraphPeriod,
-                           articles = articles,articlesExist = articlesExist, stockOwned = stockOwned,curPrice=curPrice, shares_owned= shares_owned,shares_owned_monetary_val= shares_owned_monetary_val );
+                           articles = articles,articlesExist = articlesExist, stockOwned = stockOwned,curPrice=curPrice, shares_owned= shares_owned,shares_owned_monetary_val= shares_owned_monetary_val, login_flag=login_flag);
 
 @bp.route('/portfolio', methods=['GET', 'POST'])
 def portfolio():
