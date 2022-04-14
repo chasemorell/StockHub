@@ -15,5 +15,5 @@
 ## Team Member Contributions
 1. Wyatt - Making withdraws/deposits, interacting with past purchases made by a user, sorting past purchases based on different attributes
 2. Chase - Displaying stock data history, viewing stocks in Explore Stocks, sorting stocks based on different attributes
-3. Jose - Buying/selling stock functionality, creating home page
-4. Angel - Buying/selling stock functionality, building out html templates for display
+3. Jose - Buying/selling stock functionality, writing queries for different website functionalities
+4. Angel - Buying/selling stock functionality, creating home page, building out html templates for display
