@@ -12,8 +12,8 @@ import sys
 apiKeys = ["k_ePxQg21brxYpfaTJ0vNPFH3iqS3MeD", "Nt89WhIX9zlxMA2wmgIPNkrzLoBiOjYf", "E3va20jCegrw0s25IzTn0V7RoD5xEhk7",
            "VqxYiXemp8gz0luabgtnujOJJd0m3kad", "li0kMCbq8VFfqab5gaQbTp0h3ATfSuSa"]
 
-tickerYTDFile = "./data/tickerYTD.obj"
-sp500 = pd.read_csv("./data/sp500.csv")
+#tickerYTDFile = "./db/data/tickerYTD.obj"
+#sp500 = pd.read_csv("./db/data/sp500.csv")
 
 # print(json.dumps(response, indent=2))
 
@@ -112,7 +112,10 @@ def addTimeData(timeData):
 startDate = "2020-03-10"
 endDate = "2022-03-10"
 
-def doA():
+def doA(rootPath):
+    tickerYTDFile = rootPath + "/data/tickerYTD.obj"
+    sp500 = pd.read_csv(rootPath + "/data/sp500.csv")
+
     addStocks(sp500);
     tickerEntries = restorePickledFile(tickerYTDFile)
     addTimeData(tickerEntries)
@@ -132,9 +135,15 @@ def main():
             "Parameter Info:\nf : fetches stock data from network. Saves to local file\na : adds local data to SQL "
             "database\nfa: does f and a command sequentially\n")
         return
-    if sys.argv[1] == 'a' and nArgs == 2:
+    if sys.argv[1] == 'a' and nArgs == 3:
         print("\nadding local data to SQL database")
-        doA()
+        print(sys.argv[2])
+        rootPath = sys.argv[2]
+        doA(rootPath)
+        return
+    if sys.argv[1] == 'a' and nArgs == 2:
+        print("you must also pass in the current directory. Example getStockdata.py a User/Projects/Stockhub/...")
+        print("Setup.sh runs this file automatically.")
         return
     if sys.argv[1] == 'f' and nArgs == 2:
         print("\nOnly do this if you need to! fetching stock data from APIs. This will take ~20minutes due to API "

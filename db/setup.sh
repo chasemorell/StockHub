@@ -25,9 +25,9 @@ createdb $dbname
 psql -af create.sql $dbname
 cd $datadir
 
-# read -p "Do you want to run getStockData.py to load stocks from csv (Y/N) ?" y
-# if [ $y == "Y" ] ; then
-#   python3 $mybase/getStockData.py a
-# fi
+read -p "Do you want to run getStockData.py to load stocks from csv (Y/N) ?" y
+if [ $y == "Y" ] ; then
+   python3 $mybase/getStockData.py a $mybase
+fi
 
 psql -af $mybase/load.sql $dbname
