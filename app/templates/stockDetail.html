@@ -123,6 +123,23 @@
       <button  type="submit"><i class="btn btn-default">Write Article</i></button>
     </form>
     <div></div>
+
+  {% if stockOwned %} 
+  <h4> Buy or Sell This Stock </h4>
+  <table>
+  <button  type="submit"><i class="btn btn-default">Buy</i></button> <button  type="submit"><i class="btn btn-default">Sell</i></button> 
+  <td> Transaction Amount: <br> <input type="number" name="amntinfo" id="amntinfo" value=""> </td> 
+  </table>
+  <br><br>
+   {% else %}
+   <h4> Buy This Stock </h4>
+   <table>
+   <button  type="submit"><i class="btn btn-default">Buy</i></button>
+   <td> Transaction Amount: <br> <input type="number" name="amntinfo" id="amntinfo" value=""> </td> 
+   </table>
+   <br><br>
+   {% endif %}
+  
 </body>
 </html>
 

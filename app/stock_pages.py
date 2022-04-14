@@ -91,8 +91,21 @@ def stock(text):
 
     graphPeriod = ["1 Day", "1 Week", "1 Month","1 Year","MAX"]
 
+    portfolio = Purchase.get_user_portfolio(current_user.id)
+    flag = 0
+    for stock in portfolio:
+        if stock[1] == text:
+            flag = 1
+    
+    if flag == 1:
+        stockOwned = True
+    else:
+        stockOwned = False
+
     return render_template('stockDetail.html', ticker=ticker, max=max(line_values), labels=line_labels,
-                           values=line_values, generalData=generalData,graphValue = graphValue,graphPeriod = graphPeriod,sGV = selectedGraphValue,sGP = selectedGraphPeriod,articles = articles,articlesExist = articlesExist);
+                           values=line_values, generalData=generalData,graphValue = graphValue,
+                           graphPeriod = graphPeriod,sGV = selectedGraphValue,sGP = selectedGraphPeriod,
+                           articles = articles,articlesExist = articlesExist, stockOwned = stockOwned);
 
 @bp.route('/portfolio', methods=['GET', 'POST'])
 def portfolio():
