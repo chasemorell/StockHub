@@ -6,6 +6,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
+from .models.purchase import Purchase
 
 
 from flask import Blueprint
@@ -131,5 +132,7 @@ def portfolio_login():
     # Get all stocks
     if not current_user.is_authenticated:
         return redirect(url_for('users.login', reasonForRedirect="You must login to see your portfolio."))
-
-    return render_template("portfolio.html") 
+    portfolio = Purchase.get_user_portfolio(current_user.id)
+    if portfolio is None:
+        portfolio = ""   
+    return render_template("portfolio.html", portfolio = portfolio) 
