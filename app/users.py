@@ -105,13 +105,13 @@ def submit_transfer():
 
         if type == 1: #deposit
             User.deposit(id, amount)
-        elif type == 2: #withdraw 
+        elif type == 2: #withdraw
             withdraw_amount = min(amount, current_user.get_available_balance(current_user.id))
             User.withdraw(id, withdraw_amount)
         else:
             print("Invalid Code")
-        
-        
+
+
         return render_template('transferSubmit.html')
 
     return redirect(url_for('users.login', reasonForRedirect="You must login to write an article."))
@@ -122,10 +122,10 @@ def transfer():
     if not current_user.is_authenticated:
         return redirect(url_for('users.login', reasonForRedirect="You must login to transfer money."))
 
-    return render_template("transfer_money.html", 
-                            available_balance=current_user.get_available_balance(current_user.id), 
-                            current_user=current_user, 
-                            email=current_user.email) 
+    return render_template("transfer_money.html",
+                            available_balance=current_user.get_available_balance(current_user.id),
+                            current_user=current_user,
+                            email=current_user.email)
 
 @bp.route('/portfolio', methods=['GET', 'POST'])
 def portfolio_login():
@@ -134,5 +134,5 @@ def portfolio_login():
         return redirect(url_for('users.login', reasonForRedirect="You must login to see your portfolio."))
     portfolio = Purchase.get_user_portfolio(current_user.id)
     if portfolio is None:
-        portfolio = ""   
-    return render_template("portfolio.html", portfolio = portfolio) 
+        portfolio = ""
+    return render_template("portfolio.html", portfolio = portfolio)

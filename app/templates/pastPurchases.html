@@ -56,7 +56,7 @@
     {% for purchase in purchase_history%}
       <tr>
         <th scope="row">{{purchase.id}}</th>
-        <td>{{purchase.ticker}}</td>
+        <td><a href="{{ url_for('stocks.stock', text=purchase.ticker)}}" type="button" class="btn btn-link">{{purchase.ticker}}</a></td>
         <td>{{purchase.num_shares}}</td>
         <td>{{purchase.cost}}</td>
         <td>{{purchase.time_purchased}}</td>
