@@ -82,18 +82,6 @@ class User(UserMixin):
               quanity=quantity)
 
     @staticmethod
-    def withdraw(id,quantity):
-        rows = app.db.execute("""
-            UPDATE Users
-            SET available_balance = available_balance - :quanity
-            WHERE id = :id
-            """,
-              id=id,
-              quanity=quantity)
-
-        
-
-    @staticmethod
     def get_available_balance(id):
         rows = app.db.execute("""
             SELECT available_balance
@@ -111,17 +99,17 @@ class User(UserMixin):
         rows = app.db.execute("""
             UPDATE Users
             SET
-                CASE
-                available_balance = WHEN available_balance - :quanity >0 THEN  available_balance - :quanity
+
+                available_balance = CASE WHEN available_balance - :quanity >0 THEN  available_balance - :quanity
                 ELSE
                     0
+                END
             WHERE id = :id
             RETURNING available_balance
             """,
               id=id,
               quanity=quantity)
-        printf('Available balance is:',rows[0])
-        return row
+        return rows
 
     @staticmethod
     def update_portfolio_value(id):
