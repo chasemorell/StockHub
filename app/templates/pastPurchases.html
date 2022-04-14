@@ -47,6 +47,8 @@
     <tr>
       <th scope="col">Purchase ID</th>
       <th scope="col">Ticker</th>
+      <th scope="col">Number of Shares</th>
+      <th scope="col">Cost</th>
       <th scope="col">Time Purchased</th>
     </tr>
   </thead>
@@ -55,6 +57,8 @@
       <tr>
         <th scope="row">{{purchase.pid}}</th>
         <td>{{purchase.ticker}}</td>
+        <td>{{purchase.num_shares}}</td>
+        <td>{{purchase.cost}}</td>
         <td>{{purchase.time_purchased}}</td>
       </tr>
     {% endfor %}
